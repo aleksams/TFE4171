@@ -15,7 +15,7 @@ program testPr_hdlc(
     $display("%t - Starting Test Program", $time);
     $display("*************************************************************");
 
-    init();
+    Init();
 
     //Tests:
     //Receive();

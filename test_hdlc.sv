@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////
 // Title:   test_hdlc
-// Author:  
-// Date:    
+// Author:
+// Date:
 //////////////////////////////////////////////////
 
 module test_hdlc ();
@@ -17,22 +17,18 @@ module test_hdlc ();
 
   //Dut
   Hdlc u_dut(
-  .Clk(         uin_hdlc.Clk         ),
-  .Rst(         uin_hdlc.Rst         ),
-  // Address
-  .Address(),
-  .WriteEnable(),
-  .ReadEnable(),
-  .DataIn(),
-  .DataOut(),
-  // TX
-  .Tx(),
-  .TxEN(),
-  .Tx_Done(),
-  // RX
-  .Rx(          uin_hdlc.Rx          ),
-  .RxEN(        uin_hdlc.RxEN        ),
-  .Rx_Ready()
+    .Clk         (uin_hdlc.Clk),
+    .Rst         (uin_hdlc.Rst),
+    // Address
+    .Address     (uin_hdlc.Address),
+    .WriteEnable (uin_hdlc.WriteEnable),
+    .ReadEnable  (uin_hdlc.ReadEnable),
+    .DataIn      (uin_hdlc.DataIn),
+    .DataOut     (uin_hdlc.DataOut),
+    // RX
+    .Rx          (uin_hdlc.Rx),
+    .RxEN        (uin_hdlc.RxEN),
+    .Rx_Ready    (uin_hdlc.Rx_Ready)
   );
 
   //Test program
