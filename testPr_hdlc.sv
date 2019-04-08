@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////
 // Title:   testPr_hdlc
-// Author:  
-// Date:    
+// Author:
+// Date:
 //////////////////////////////////////////////////
 
 program testPr_hdlc(
@@ -18,7 +18,11 @@ program testPr_hdlc(
     init();
 
     //Tests:
-    Receive();
+    //Receive();
+    //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
+    Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
+    Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
+    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -186,9 +190,9 @@ program testPr_hdlc(
 
     //Generate stimulus
     InsertFlagOrAbort(1);
-    
+
     MakeRxStimulus(ReceiveData, Size + 2);
-    
+
     if(Overflow) begin
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
@@ -248,25 +252,37 @@ program testPr_hdlc(
     assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, RX_SC=%8b", ReadData);
         else $error("RX_SC=%8b, not the correct value after abort receive!", ReadData);
 
-    ReadAddress(3'h3, ReadData);
-    assert (ReadData == 0) $display ("PASS: VerifyAbortReceiveData, RX_BUFF=%0b", ReadData);
-        else $error("RX_BUFF=%0b, not the correct value after abort receive!", ReadData);
+    // Verify content of Rx_Buff registers
+    for(int i=0; i<Size+2; i++) begin
+      ReadAddress(3'h3, ReadData);
+      assert (ReadData == 0) else $error("RX_BUFF[%0d]=%0b, not the correct value after abort receive!", i, ReadData);
+    end
 
   endtask
 
 
   task VerifyNormalReceive(logic [127:0][7:0] data, int Size);
-    logic [7:0] ReadData;
+    logic [7:0]  ReadData;
+    logic [15:0] FCSBytes;
     wait(uin_hdlc.Rx_Ready);
 
+    // Verify content of Rx_SC register
     ReadAddress(3'h2, ReadData);
     assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
         else $error("RX_SC=%8b, not the correct value after normal receive!", ReadData);
 
+    // Verify content of Rx_Buff registers
+    for(int i=0; i<Size; i++) begin
+      ReadAddress(3'h3, ReadData);
+      assert (ReadData == data[i]) else $error("RX_BUFF[%0d]=%0b, not the correct value after normal receive!", i, ReadData);
+    end
+
+    // Verify CRC Bytes
     ReadAddress(3'h3, ReadData);
-    assert (ReadData == data[0]) $display ("PASS: VerifyNormalReceiveData, RX_BUFF=%0b", ReadData);
-        else $error("RX_BUFF=%0b, not the correct value after normal receive!", ReadData);
-  
+    assert (ReadData == data[126]) else $error("CRCBits[7:0]=%0b, not the correct value after normal receive!", ReadData);
+    ReadAddress(3'h3, ReadData);
+    assert (ReadData == data[127]) else $error("CRCBits[15:0]=%0b, not the correct value after normal receive!", ReadData);
+
   endtask
 
 
@@ -278,10 +294,12 @@ program testPr_hdlc(
     assert (ReadData == 8'b00010001) $display ("PASS: VerifyOverflowReceiveRXSC, RX_SC=%8b", ReadData);
         else $error("RX_SC=%8b, not the correct value after overflow receive!", ReadData);
 
-    ReadAddress(3'h3, ReadData);
-    assert (ReadData == data[0]) $display ("PASS: VerifyOverflowReceiveData, RX_BUFF=%0b", ReadData);
-        else $error("RX_BUFF=%0b, not the correct value after overflow receive!", ReadData);
-  
+    // Verify content of Rx_Buff registers
+    for(int i=0; i<Size+2; i++) begin
+      ReadAddress(3'h3, ReadData);
+      assert (ReadData == data[i]) else $error("RX_BUFF[%0d]=%0b, not the correct value after overflow receive!", i, ReadData);
+    end
+
   endtask
 
 endprogram
