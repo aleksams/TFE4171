@@ -40,9 +40,14 @@ program testPr_hdlc(
 
   end
 
-  task init();
+  task Init();
     uin_hdlc.Clk         =   1'b0;
     uin_hdlc.Rst         =   1'b0;
+    uin_hdlc.Address     = 3'b000;
+    uin_hdlc.WriteEnable =   1'b0;
+    uin_hdlc.ReadEnable  =   1'b0;
+    uin_hdlc.DataIn      =     '0;
+    uin_hdlc.TxEN        =   1'b1;
     uin_hdlc.Rx          =   1'b1;
     uin_hdlc.RxEN        =   1'b1;
 
