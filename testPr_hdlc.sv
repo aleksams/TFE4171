@@ -289,20 +289,20 @@ program testPr_hdlc(
     for(int i=0; i<Size; i++) begin
       ReadAddress(3'h3, ReadData);
       assert (ReadData == data[i]) else begin
-        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after normal receive!", i, ReadData);
+        $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
         TbErrorCnt++;
       end
     end
 
     // Verify CRC Bytes
     ReadAddress(3'h3, ReadData);
-    assert (ReadData == data[126]) else begin
-      $display("ERROR: CRCBits[7:0]=%0b, not the correct value after normal receive!", ReadData);
+    assert (ReadData == data[Size]) else begin
+      $display("ERROR: CRCBits[7:0]=%8b, not the correct value after normal receive, should be: %8b", ReadData, data[Size]);
       TbErrorCnt++;
     end
     ReadAddress(3'h3, ReadData);
-    assert (ReadData == data[127]) else begin
-      $display("ERROR: CRCBits[15:0]=%0b, not the correct value after normal receive!", ReadData);
+    assert (ReadData == data[Size+1]) else begin
+      $display("ERROR: CRCBits[15:0]=%8b, not the correct value after normal receive, should be: %8b!", ReadData, data[Size+1]);
       TbErrorCnt++;
     end
 
@@ -315,12 +315,18 @@ program testPr_hdlc(
 
     ReadAddress(3'h2, ReadData);
     assert (ReadData == 8'b00010001) $display ("PASS: VerifyOverflowReceiveRXSC, RX_SC=%8b", ReadData);
-        else $display("ERROR: RX_SC=%8b, not the correct value after overflow receive!", ReadData);
+        else begin
+          $display("ERROR: RX_SC=%8b, not the correct value after overflow receive!", ReadData);
+          TbErrorCnt++;
+        end
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size+2; i++) begin
       ReadAddress(3'h3, ReadData);
-      assert (ReadData == data[i]) else $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after overflow receive!", i, ReadData);
+      assert (ReadData == data[i]) else begin
+        $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after overflow receive, should be: %8b!", i, ReadData, data[i]);
+        TbErrorCnt++;
+      end
     end
 
   endtask
