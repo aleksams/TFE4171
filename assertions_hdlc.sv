@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////
 // Title:   assertions_hdlc
-// Author:  
-// Date:    
+// Author:  Halvor Horvei & Aleksander Moberg Skarnes
+// Date:
 //////////////////////////////////////////////////
 
 module assertions_hdlc (
@@ -15,7 +15,7 @@ module assertions_hdlc (
   initial begin
     ErrCntAssertions = 0;
   end
-  
+
   sequence Rx_flag;
     !Rx ##1 Rx [*6] ##1 !Rx;
   endsequence
