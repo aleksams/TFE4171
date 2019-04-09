@@ -255,7 +255,7 @@ program testPr_hdlc(
     Receive( Size, 1, 0, 0, 0, 0, 0, data); //Abort
 
     ReadAddress(3'h2, ReadData);
-    assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, RX_SC=%8b", ReadData);
+    a_abort_RXSC_content: assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after abort receive!", ReadData);
           TbErrorCnt++;
@@ -286,7 +286,7 @@ program testPr_hdlc(
 
     // Verify content of Rx_SC register
     ReadAddress(3'h2, ReadData);
-    assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
+    a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
           TbErrorCnt++;
@@ -300,16 +300,23 @@ program testPr_hdlc(
         TbErrorCnt++;
       end
     end
+    for(int i=0; i<(126-Size); i++) begin
+      ReadAddress(3'h3, ReadData);
+      assert (ReadData == 0) else begin
+        $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
+        TbErrorCnt++;
+      end
+    end
 
     // Verify CRC Bytes
     ReadAddress(3'h3, ReadData);
     assert (ReadData == data[Size]) else begin
-      $display("ERROR: CRCBits[7:0]=%8b, not the correct value after normal receive, should be: %8b", ReadData, data[Size]);
+      $display("ERROR: first FCS byte=%8b, not the correct value after normal receive, should be: %8b", ReadData, data[Size]);
       TbErrorCnt++;
     end
     ReadAddress(3'h3, ReadData);
     assert (ReadData == data[Size+1]) else begin
-      $display("ERROR: CRCBits[15:0]=%8b, not the correct value after normal receive, should be: %8b!", ReadData, data[Size+1]);
+      $display("ERROR: second FCS byte=%8b, not the correct value after normal receive, should be: %8b!", ReadData, data[Size+1]);
       TbErrorCnt++;
     end
 
@@ -327,7 +334,7 @@ program testPr_hdlc(
     wait(uin_hdlc.Rx_Ready);
 
     ReadAddress(3'h2, ReadData);
-    assert (ReadData == 8'b00010001) $display ("PASS: VerifyOverflowReceiveRXSC, RX_SC=%8b", ReadData);
+    a_overflow_RXSC_content: assert (ReadData == 8'b00010001) $display ("PASS: VerifyOverflowReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after overflow receive!", ReadData);
           TbErrorCnt++;
