@@ -4,6 +4,12 @@
 // Date:
 //////////////////////////////////////////////////
 
+`define Tx_SC   3'h0
+`define Tx_Buff 3'h1
+`define Rx_SC   3'h2
+`define Rx_Buff 3'h3
+`define Rx_Len  3'h4
+
 program testPr_hdlc(
   in_hdlc uin_hdlc
 );
@@ -254,7 +260,7 @@ program testPr_hdlc(
 
     Receive( Size, 1, 0, 0, 0, 0, 0, data); //Abort
 
-    ReadAddress(3'h2, ReadData);
+    ReadAddress(`Rx_SC, ReadData);
     a_abort_RXSC_content: assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after abort receive!", ReadData);
@@ -263,7 +269,7 @@ program testPr_hdlc(
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size+2; i++) begin
-      ReadAddress(3'h3, ReadData);
+      ReadAddress(`Rx_Buff, ReadData);
       assert (ReadData == 0) else begin
         $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after abort receive!", i, ReadData);
         TbErrorCnt++;
@@ -285,7 +291,7 @@ program testPr_hdlc(
     wait(uin_hdlc.Rx_Ready);
 
     // Verify content of Rx_SC register
-    ReadAddress(3'h2, ReadData);
+    ReadAddress(`Rx_SC, ReadData);
     a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
@@ -294,14 +300,14 @@ program testPr_hdlc(
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
-      ReadAddress(3'h3, ReadData);
+      ReadAddress(`Rx_Buff, ReadData);
       assert (ReadData == data[i]) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
         TbErrorCnt++;
       end
     end
     for(int i=0; i<(126-Size); i++) begin
-      ReadAddress(3'h3, ReadData);
+      ReadAddress(`Rx_Buff, ReadData);
       assert (ReadData == 0) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
         TbErrorCnt++;
@@ -309,12 +315,12 @@ program testPr_hdlc(
     end
 
     // Verify CRC Bytes
-    ReadAddress(3'h3, ReadData);
+    ReadAddress(`Rx_Buff, ReadData);
     assert (ReadData == data[Size]) else begin
       $display("ERROR: first FCS byte=%8b, not the correct value after normal receive, should be: %8b", ReadData, data[Size]);
       TbErrorCnt++;
     end
-    ReadAddress(3'h3, ReadData);
+    ReadAddress(`Rx_Buff, ReadData);
     assert (ReadData == data[Size+1]) else begin
       $display("ERROR: second FCS byte=%8b, not the correct value after normal receive, should be: %8b!", ReadData, data[Size+1]);
       TbErrorCnt++;
@@ -333,7 +339,7 @@ program testPr_hdlc(
 
     wait(uin_hdlc.Rx_Ready);
 
-    ReadAddress(3'h2, ReadData);
+    ReadAddress(`Rx_SC, ReadData);
     a_overflow_RXSC_content: assert (ReadData == 8'b00010001) $display ("PASS: VerifyOverflowReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after overflow receive!", ReadData);
@@ -342,7 +348,7 @@ program testPr_hdlc(
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
-      ReadAddress(3'h3, ReadData);
+      ReadAddress(`Rx_Buff, ReadData);
       assert (ReadData == data[i]) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after overflow receive, should be: %8b!", i, ReadData, data[i]);
         TbErrorCnt++;
