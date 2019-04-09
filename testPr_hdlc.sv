@@ -154,7 +154,7 @@ program testPr_hdlc(
     end
   endtask
 
-  task Receive(int Size, int Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead);
+  task Receive(int Size, int Abort, int FCSerr, int NonByteAligned, int Overflow, int Drop, int SkipRead, output logic [127:0][7:0] data);
     logic [127:0][7:0] ReceiveData;
     logic       [15:0] FCSBytes;
     logic   [2:0][7:0] OverflowData;
@@ -187,6 +187,9 @@ program testPr_hdlc(
     GenerateFCSBytes(ReceiveData, Size, FCSBytes);
     ReceiveData[Size]   = FCSBytes[7:0];
     ReceiveData[Size+1] = FCSBytes[15:8];
+
+    //Output data
+    data = ReceiveData;
 
     //Enable FCS
     if(!Overflow && !NonByteAligned)
@@ -243,10 +246,13 @@ program testPr_hdlc(
 
 //---------- Assertion tasks ----------
 
-  task VerifyAbortReceive(logic [127:0][7:0] data, int Size);
+  task VerifyAbortReceive();
+    logic [127:0][7:0] data;
     logic [7:0] ReadData;
+    int Size;
+    Size = 40;
 
-    Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
+    Receive( Size, 1, 0, 0, 0, 0, 0, data); //Abort
 
     ReadAddress(3'h2, ReadData);
     assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, RX_SC=%8b", ReadData);
@@ -267,11 +273,14 @@ program testPr_hdlc(
   endtask
 
 
-  task VerifyNormalReceive(logic [127:0][7:0] data, int Size);
+  task VerifyNormalReceive();
+    logic [127:0][7:0] data;
     logic [7:0]  ReadData;
     logic [15:0] FCSBytes;
+    int Size;
+    Size = 10;
 
-    Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
+    Receive( Size, 0, 0, 0, 0, 0, 0, data); //Normal
 
     wait(uin_hdlc.Rx_Ready);
 
@@ -307,10 +316,13 @@ program testPr_hdlc(
   endtask
 
 
-  task VerifyOverflowReceive(logic [127:0][7:0] data, int Size);
+  task VerifyOverflowReceive();
+    logic [127:0][7:0] data;
     logic [7:0] ReadData;
+    int Size;
+    Size = 126;
 
-    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+    Receive(Size, 0, 0, 0, 1, 0, 0, data); //Overflow
 
     wait(uin_hdlc.Rx_Ready);
 
@@ -322,7 +334,7 @@ program testPr_hdlc(
         end
 
     // Verify content of Rx_Buff registers
-    for(int i=0; i<Size+2; i++) begin
+    for(int i=0; i<Size; i++) begin
       ReadAddress(3'h3, ReadData);
       assert (ReadData == data[i]) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after overflow receive, should be: %8b!", i, ReadData, data[i]);
