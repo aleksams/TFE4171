@@ -18,11 +18,12 @@ program testPr_hdlc(
     Init();
 
     //Tests:
-    //Receive();
-    //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
-    Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
-    Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
-    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+    VerifyNormalReceive();
+    #5000ns;
+    VerifyAbortReceive();
+    #5000ns;
+    VerifyOverflowReceive();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -217,14 +218,6 @@ program testPr_hdlc(
     repeat(8)
       @(posedge uin_hdlc.Clk);
 
-    if(Abort)
-      VerifyAbortReceive(ReceiveData, Size);
-    else if(Overflow)
-      VerifyOverflowReceive(ReceiveData, Size);
-    else if(!SkipRead)
-      VerifyNormalReceive(ReceiveData, Size);
-
-    #5000ns;
   endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
@@ -253,6 +246,8 @@ program testPr_hdlc(
   task VerifyAbortReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
 
+    Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
+
     ReadAddress(3'h2, ReadData);
     assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, RX_SC=%8b", ReadData);
         else begin
@@ -275,6 +270,9 @@ program testPr_hdlc(
   task VerifyNormalReceive(logic [127:0][7:0] data, int Size);
     logic [7:0]  ReadData;
     logic [15:0] FCSBytes;
+
+    Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
+
     wait(uin_hdlc.Rx_Ready);
 
     // Verify content of Rx_SC register
@@ -311,6 +309,9 @@ program testPr_hdlc(
 
   task VerifyOverflowReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
+
+    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+
     wait(uin_hdlc.Rx_Ready);
 
     ReadAddress(3'h2, ReadData);
