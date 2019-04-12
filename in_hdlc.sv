@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////
 // Title:   in_hdlc
-// Author:  
-// Date:    
+// Author:
+// Date:
 //////////////////////////////////////////////////
 
 interface in_hdlc ();
@@ -30,8 +30,10 @@ interface in_hdlc ();
   logic              Rx_Ready;
 
   // Tx - internal
- 
+
   // Rx - internal
   logic       Rx_FlagDetect;
+  logic       Rx_ValidFrame;
+
 
 endinterface

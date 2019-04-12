@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////
 // Title:   bind_hdlc
-// Author:  
-// Date:    
+// Author:
+// Date:
 //////////////////////////////////////////////////
 
 module bind_hdlc ();
@@ -12,6 +12,7 @@ module bind_hdlc ();
     .Rst(uin_hdlc.Rst),
     .Rx(uin_hdlc.Rx),
     .Rx_FlagDetect(uin_hdlc.Rx_FlagDetect)
+    .Rx_ValidFrame(uin_hdlc.Rx_ValidFrame)
   );
 
 endmodule
