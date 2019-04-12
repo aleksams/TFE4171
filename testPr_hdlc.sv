@@ -30,6 +30,8 @@ program testPr_hdlc(
     #5000ns;
     VerifyOverflowReceive();
     #5000ns;
+    VerifyFCSErrorReceive();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -40,21 +42,24 @@ program testPr_hdlc(
   final begin
 
     if((TbErrorCnt+uin_hdlc.ErrCntAssertions) > 0) begin
-      $display("*********************************");
+      $display("\n\n*********************************");
+      $display("*                               *");
       $display("*                      XX XX    *");
       $display("*  SIMULATION FAILED!   XXX     *");
       $display("*                      XX XX    *");
       $display("*                               *");
       $display("* \tAssertion Errors: %0d\t  *", TbErrorCnt + uin_hdlc.ErrCntAssertions);
       $display("*                               *");
-      $display("*********************************");
+      $display("*********************************\n");
     end
     else begin
-      $display("*********************************");
+      $display("\n\n*********************************");
+      $display("*                               *");
       $display("*                           XX  *");
       $display("*  SIMULATION PASSED!   XX XX   *");
       $display("*                        XXX    *");
-      $display("*********************************");
+      $display("*                               *");
+      $display("*********************************\n");
     end
 
   end
@@ -171,8 +176,14 @@ program testPr_hdlc(
 
     //Calculate FCS bits;
     GenerateFCSBytes(ReceiveData, Size, FCSBytes);
-    ReceiveData[Size]   = FCSBytes[7:0];
-    ReceiveData[Size+1] = FCSBytes[15:8];
+    if(!FCSerr) begin
+      ReceiveData[Size]   = FCSBytes[7:0];
+      ReceiveData[Size+1] = FCSBytes[15:8];
+    end
+    else begin
+      ReceiveData[Size]   = ~FCSBytes[7:0];
+      ReceiveData[Size+1] = ~FCSBytes[15:8];
+    end
 
     //Output data
     data = ReceiveData;
@@ -344,6 +355,23 @@ program testPr_hdlc(
   Size = 30;
 
   Receive( Size, 0, 1, 0, 0, 0, 0, data); //FCS Error
+
+  ReadAddress(`Rx_SC, ReadData);
+  a_FCSError_RXSC_content: assert (ReadData == 8'b00100100) $display ("PASS: VerifyFCSErrorReceiveRXSC, RX_SC=%8b", ReadData);
+      else begin
+        $display("ERROR: RX_SC=%8b, not the correct value after FCS error receive!", ReadData);
+        TbErrorCnt++;
+      end
+
+  // Verify content of Rx_Buff registers
+  for(int i=0; i<Size+2; i++) begin
+    ReadAddress(`Rx_Buff, ReadData);
+    a_abort_RxBuff_content: assert (ReadData == 0) else begin
+      $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after FCS error receive!", i, ReadData);
+      TbErrorCnt++;
+    end
+  end
+
   endtask
 
   task VerifyFrameErrorReceive();
