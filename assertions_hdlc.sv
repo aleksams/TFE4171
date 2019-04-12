@@ -26,6 +26,6 @@ module assertions_hdlc (
   endproperty
 
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
-                                  else begin $error("Flag sequence did not generate FlagDetect"); ErrCntAssertions++; end
+                                  else begin $display("ERROR: Flag sequence did not generate FlagDetect"); ErrCntAssertions++; end
 
 endmodule

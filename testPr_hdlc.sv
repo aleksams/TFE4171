@@ -39,11 +39,23 @@ program testPr_hdlc(
 
   final begin
 
-    $display("*********************************");
-    $display("*                               *");
-    $display("* \tAssertion Errors: %0d\t  *", TbErrorCnt + uin_hdlc.ErrCntAssertions);
-    $display("*                               *");
-    $display("*********************************");
+    if((TbErrorCnt+uin_hdlc.ErrCntAssertions) > 0) begin
+      $display("*********************************");
+      $display("*                      XX XX    *");
+      $display("*  SIMULATION FAILED!   XXX     *");
+      $display("*                      XX XX    *");
+      $display("*                               *");
+      $display("* \tAssertion Errors: %0d\t  *", TbErrorCnt + uin_hdlc.ErrCntAssertions);
+      $display("*                               *");
+      $display("*********************************");
+    end
+    else begin
+      $display("*********************************");
+      $display("*                           XX  *");
+      $display("*  SIMULATION PASSED!   XX XX   *");
+      $display("*                        XXX    *");
+      $display("*********************************");
+    end
 
   end
 
@@ -82,38 +94,6 @@ program testPr_hdlc(
     @(posedge uin_hdlc.Clk);
     uin_hdlc.ReadEnable = 1'b0;
   endtask
-
-
-/*  task Receive();
-    logic [7:0] ReadData;
-
-    //RX flag
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b0;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b0;
-    @(posedge uin_hdlc.Clk);
-    uin_hdlc.Rx = 1'b1;
-
-    repeat(8)
-      @(posedge uin_hdlc.Clk);
-
-    ReadAddress(3'b010 , ReadData);
-    $display("Rx_SC=%h", ReadData);
-
-  endtask */
 
 //---------- Stimuli tasks ----------
 
@@ -250,7 +230,7 @@ program testPr_hdlc(
     FCSBytes = CheckReg;
   endtask
 
-//---------- Assertion tasks ----------
+//---------- Verification tasks ----------
 
   task VerifyAbortReceive();
     logic [127:0][7:0] data;
@@ -270,7 +250,7 @@ program testPr_hdlc(
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size+2; i++) begin
       ReadAddress(`Rx_Buff, ReadData);
-      assert (ReadData == 0) else begin
+      a_abort_RxBuff_content: assert (ReadData == 0) else begin
         $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after abort receive!", i, ReadData);
         TbErrorCnt++;
       end
@@ -308,7 +288,7 @@ program testPr_hdlc(
     end
     for(int i=0; i<(126-Size); i++) begin
       ReadAddress(`Rx_Buff, ReadData);
-      assert (ReadData == 0) else begin
+      a_normal_RxBuff_content: assert (ReadData == 0) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
         TbErrorCnt++;
       end
@@ -349,12 +329,39 @@ program testPr_hdlc(
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
       ReadAddress(`Rx_Buff, ReadData);
-      assert (ReadData == data[i]) else begin
+      a_overflow_RxBuff_content: assert (ReadData == data[i]) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after overflow receive, should be: %8b!", i, ReadData, data[i]);
         TbErrorCnt++;
       end
     end
 
+  endtask
+
+  task VerifyFCSErrorReceive();
+  logic [127:0][7:0] data;
+  logic [7:0] ReadData;
+  int Size;
+  Size = 30;
+
+  Receive( Size, 0, 1, 0, 0, 0, 0, data); //FCS Error
+  endtask
+
+  task VerifyFrameErrorReceive();
+    logic [127:0][7:0] data;
+    logic [7:0] ReadData;
+    int Size;
+    Size = 20;
+
+    Receive( Size, 0, 0, 1, 0, 0, 0, data); //Frame Error
+  endtask
+
+  task VerifyDroppedFrameReceive();
+    logic [127:0][7:0] data;
+    logic [7:0] ReadData;
+    int Size;
+    Size = 50;
+
+    Receive( Size, 0, 0, 0, 0, 1, 0, data); //Dropped Frame
   endtask
 
 endprogram
