@@ -9,8 +9,10 @@ module assertions_hdlc (
   input logic Clk,
   input logic Rst,
   input logic Rx,
-  input logic Rx_FlagDetect
-  input logic ValidFrame
+  input logic Rx_FlagDetect,
+  input logic Rx_ValidFrame,
+  input logic Tx,
+  input logic Tx_ValidFrame
   );
 
   initial begin
@@ -41,7 +43,7 @@ module assertions_hdlc (
   //What signals are set when in idle? !ValidFrame
   //Rx
   property Receive_IdlePattern;
-    @(posedge Clk) Rx_IdlePattern |-> ##1 !ValidFrame;
+    @(posedge Clk) Rx_IdlePattern |-> ##2 !Rx_ValidFrame;
   endproperty
 
   Receive_IdlePattern_Assert    :  assert property (Receive_IdlePattern) //$display("PASS: Receive_IdlePattern");
@@ -50,11 +52,11 @@ else begin $display("ERROR: Rx input did not correctly generate idle pattern"); 
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
   property Generate_IdlePattern;
-    @(posedge Clk) Rx_flag |-> ##2 Rx_FlagDetect;
+    @(posedge Clk) !Tx_ValidFrame |-> ##1 Tx_IdlePattern;
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
-                                    else begin $display("ERROR: Flag sequence did not generate FlagDetect"); ErrCntAssertions++; end
+else begin $display("ERROR: Tx did not generate Tx_IdlePattern"); ErrCntAssertions++; end
 
 
 endmodule
