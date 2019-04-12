@@ -11,6 +11,7 @@ module test_hdlc ();
 
   //Internal assignments
   assign uin_hdlc.Rx_FlagDetect      = u_dut.Rx_FlagDetect;
+  assign uin_hdlc.Rx_ValidFrame      = u_dut.Rx_ValidFrame;
 
   //Clock
   always #250ns uin_hdlc.Clk = ~uin_hdlc.Clk;
