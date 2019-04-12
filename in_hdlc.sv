@@ -30,6 +30,7 @@ interface in_hdlc ();
   logic              Rx_Ready;
 
   // Tx - internal
+  logic       Tx_ValidFrame;
 
   // Rx - internal
   logic       Rx_FlagDetect;

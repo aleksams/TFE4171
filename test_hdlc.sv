@@ -9,9 +9,12 @@ module test_hdlc ();
   //Hdlc interface
   in_hdlc uin_hdlc();
 
-  //Internal assignments
+  //RX - Internal assignments
   assign uin_hdlc.Rx_FlagDetect      = u_dut.Rx_FlagDetect;
   assign uin_hdlc.Rx_ValidFrame      = u_dut.Rx_ValidFrame;
+
+  //TX - Internal assignments
+  assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;
 
   //Clock
   always #250ns uin_hdlc.Clk = ~uin_hdlc.Clk;
