@@ -140,13 +140,11 @@ program testPr_hdlc(
           PrevData[4] = 1'b0;
         end
 
-        if(!NonByteAligned && (i!=Size && j!=7)) begin
-          @(posedge uin_hdlc.Clk);
-          uin_hdlc.Rx = Data[i][j];
+        @(posedge uin_hdlc.Clk);
+        uin_hdlc.Rx = Data[i][j];
 
-          PrevData = PrevData >> 1;
-          PrevData[4] = Data[i][j];
-        end
+        PrevData = PrevData >> 1;
+        PrevData[4] = Data[i][j];
       end
     end
   endtask
