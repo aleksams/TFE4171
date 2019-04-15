@@ -212,8 +212,6 @@ program testPr_hdlc(
 
     if(Abort)
       InsertFlagOrAbort(0);
-    else if(Drop)
-      WriteAddress(`Rx_SC, 8'h22);
     else
       InsertFlagOrAbort(1);
 
@@ -222,6 +220,12 @@ program testPr_hdlc(
 
     repeat(8)
       @(posedge uin_hdlc.Clk);
+
+    if(Drop) begin
+      WriteAddress(`Rx_SC, 8'h22);
+      repeat(8)
+        @(posedge uin_hdlc.Clk);
+    end
 
   endtask
 
