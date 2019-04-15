@@ -34,6 +34,8 @@ program testPr_hdlc(
     #5000ns;
     VerifyFCSErrorReceive();
     #5000ns;
+    VerifyDroppedFrameReceive();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -192,9 +194,9 @@ program testPr_hdlc(
 
     //Enable FCS
     if(!Overflow && !NonByteAligned)
-      WriteAddress(3'h2, 8'h20); // RXSC
+      WriteAddress(`Rx_SC, 8'h20);
     else
-      WriteAddress(3'h2, 8'h00); // RXSC
+      WriteAddress(`Rx_SC, 8'h00);
 
     //Generate stimulus
     InsertFlagOrAbort(1);
@@ -208,11 +210,12 @@ program testPr_hdlc(
       MakeRxStimulus(OverflowData, 3);
     end
 
-    if(Abort) begin
+    if(Abort)
       InsertFlagOrAbort(0);
-    end else begin
+    else if(Dropped)
+      WriteAddress(`Rx_SC, 8'h22);
+    else
       InsertFlagOrAbort(1);
-    end
 
     @(posedge uin_hdlc.Clk);
     uin_hdlc.Rx = 1'b1;
@@ -385,6 +388,23 @@ program testPr_hdlc(
     Size = 50;
 
     Receive( Size, 0, 0, 0, 0, 1, 0, data); //Dropped Frame
+
+    ReadAddress(`Rx_SC, ReadData);
+    a_dropped_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyDroppedFrameRXSC, RX_SC=%8b", ReadData);
+        else begin
+          $display("ERROR: RX_SC=%8b, not the correct value after Dropped frame receive!", ReadData);
+          TbErrorCnt++;
+        end
+
+    // Verify content of Rx_Buff registers
+    for(int i=0; i<Size+2; i++) begin
+      ReadAddress(`Rx_Buff, ReadData);
+      a_dropped_RxBuff_content: assert (ReadData == 0) else begin
+        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after Dropped frame receive!", i, ReadData);
+        TbErrorCnt++;
+      end
+    end
+
   endtask
 
 endprogram
