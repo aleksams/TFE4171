@@ -128,7 +128,7 @@ program testPr_hdlc(
       uin_hdlc.Rx = 1'b1;
   endtask
 
-  task MakeRxStimulus(logic [127:0][7:0] Data, int Size);
+  task MakeRxStimulus(logic [127:0][7:0] Data, int Size, int NonByteAligned=0);
     logic [4:0] PrevData;
     PrevData = '0;
     for (int i = 0; i < Size; i++) begin
@@ -140,11 +140,13 @@ program testPr_hdlc(
           PrevData[4] = 1'b0;
         end
 
-        @(posedge uin_hdlc.Clk);
-        uin_hdlc.Rx = Data[i][j];
+        if(i!=Size && j!=7) begin
+          @(posedge uin_hdlc.Clk);
+          uin_hdlc.Rx = Data[i][j];
 
-        PrevData = PrevData >> 1;
-        PrevData[4] = Data[i][j];
+          PrevData = PrevData >> 1;
+          PrevData[4] = Data[i][j];
+        end
       end
     end
   endtask
@@ -201,7 +203,7 @@ program testPr_hdlc(
     //Generate stimulus
     InsertFlagOrAbort(1);
 
-    MakeRxStimulus(ReceiveData, Size + 2);
+    MakeRxStimulus(ReceiveData, Size + 2, NonByteAligned);
 
     if(Overflow) begin
       OverflowData[0] = 8'h44;
@@ -383,6 +385,13 @@ program testPr_hdlc(
     Size = 20;
 
     Receive( Size, 0, 0, 1, 0, 0, 0, data); //Frame Error
+
+    a_FrameError_RXSC_content: assert (ReadData == 8'b00100000) $display ("PASS: VerifyFrameErrorRXSC, RX_SC=%8b", ReadData);
+        else begin
+          $display("ERROR: RX_SC=%8b, not the correct value after frame error receive!", ReadData);
+          TbErrorCnt++;
+        end
+
   endtask
 
   task VerifyDroppedFrameReceive();
