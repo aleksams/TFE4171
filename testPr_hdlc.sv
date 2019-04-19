@@ -36,6 +36,8 @@ program testPr_hdlc(
     #5000ns;
     VerifyDroppedFrameReceive();
     #5000ns;
+    VerifyFrameErrorReceive();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -140,11 +142,21 @@ program testPr_hdlc(
           PrevData[4] = 1'b0;
         end
 
-        @(posedge uin_hdlc.Clk);
-        uin_hdlc.Rx = Data[i][j];
+        if(i==127 && j==7) begin
+          if(~NonByteAligned) begin
+            @(posedge uin_hdlc.Clk);
+            uin_hdlc.Rx = Data[i][j];
 
-        PrevData = PrevData >> 1;
-        PrevData[4] = Data[i][j];
+            PrevData = PrevData >> 1;
+            PrevData[4] = Data[i][j];
+          end
+        end else begin
+          @(posedge uin_hdlc.Clk);
+          uin_hdlc.Rx = Data[i][j];
+
+          PrevData = PrevData >> 1;
+          PrevData[4] = Data[i][j];
+        end
       end
     end
   endtask
