@@ -396,6 +396,7 @@ program testPr_hdlc(
 
     Receive( Size, 0, 0, 1, 0, 0, 0, data); //Frame Error
 
+    ReadAddress(`Rx_SC, ReadData);
     a_FrameError_RXSC_content: assert (ReadData == 8'b00100000) $display ("PASS: VerifyFrameErrorRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after frame error receive!", ReadData);
