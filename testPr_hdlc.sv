@@ -485,10 +485,12 @@ program testPr_hdlc(
   task VerifyTransmittedData(logic [127:0][7:0] TransmitData, int Size, int Abort);
     logic [7:0] Flag;
     logic [7:0] Abort_Flag;
+    logic [4:0] PrevData;
     Flag = 8'b01111110;
     Abort_Flag = 8'b11111110;
+    PrevData = '0;
 
-    wait(uin_hdlc.Tx_FCSDone);
+    wait(uin_hdlc.Tx_ValidFrame);
 
     // Check Flag
     for(int i = 0; i < 8; i++) begin
@@ -503,10 +505,19 @@ program testPr_hdlc(
     for(int i = 0; i < Size; i++) begin
       for(int j = 0; j < 8; j++) begin
         @(posedge uin_hdlc.Clk);
+        PrevData = PrevData >> 1;
+        PrevData[4] = uin_hdlc.Tx;
         a_CorrectTxOutput: assert (uin_hdlc.Tx == TransmitData[i][j]) else begin
             $display("ERROR: TX=%1b, not the correct TX data value!", uin_hdlc.Tx);
             TbErrorCnt++;
           end
+        if(&PrevData) begin
+          @(posedge uin_hdlc.Clk);
+          a_CorrectTxOutput: assert (uin_hdlc.Tx == 0) else begin
+              $display("ERROR: TX=%1b, no zero inserted!", uin_hdlc.Tx);
+              TbErrorCnt++;
+            end
+        end
       end
     end
 
