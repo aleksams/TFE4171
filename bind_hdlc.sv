@@ -10,13 +10,11 @@ module bind_hdlc ();
     .ErrCntAssertions(uin_hdlc.ErrCntAssertions),
     .Clk(uin_hdlc.Clk),
     .Rst(uin_hdlc.Rst),
-    
     .Rx(uin_hdlc.Rx),
     .Rx_FlagDetect(uin_hdlc.Rx_FlagDetect),
     .Rx_ValidFrame(uin_hdlc.Rx_ValidFrame),
     .Rx_AbortSignal(uin_hdlc.Rx_ValidFrame),
     .Rx_AbortDetect(uin_hdlc.Rx_AbortDetect),
-
     .Tx(uin_hdlc.Tx),
     .Tx_ValidFrame(uin_hdlc.Tx_ValidFrame)
   );
