@@ -36,7 +36,7 @@ program testPr_hdlc(
     #5000ns;
     VerifyDroppedFrameReceive();
     #5000ns;
-    VerifyFrameErrorReceive();
+    VerifyNonByteAlignedReceive();
     #5000ns;
 
     $display("*************************************************************");
@@ -254,7 +254,7 @@ program testPr_hdlc(
           CheckReg[13:2] = CheckReg[13:2];
           CheckReg[14]   = CheckReg[14] ^ 1;
           CheckReg[15]   = CheckReg[15];
-          CheckReg[16]   = CheckReg[16] ^1;
+          CheckReg[16]   = CheckReg[16] ^ 1;
         end
         CheckReg = CheckReg >> 1;
       end
@@ -313,7 +313,7 @@ program testPr_hdlc(
     // Verify content of RxBuff registers
     for(int i=0; i<Size; i++) begin
       ReadAddress(`Rx_Buff, ReadData);
-      assert (ReadData == data[i]) else begin
+      a_normal_RxBuff_content: assert (ReadData == data[i]) else begin
         $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
         TbErrorCnt++;
       end
@@ -380,7 +380,7 @@ program testPr_hdlc(
   // Verify content of Rx_Buff registers
   for(int i=0; i<Size; i++) begin
     ReadAddress(`Rx_Buff, ReadData);
-    a_abort_RxBuff_content: assert (ReadData == 0) else begin
+    a_FCSError_RxBuff_content: assert (ReadData == 0) else begin
       $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after FCS error receive!", i, ReadData);
       TbErrorCnt++;
     end
@@ -399,9 +399,18 @@ program testPr_hdlc(
     ReadAddress(`Rx_SC, ReadData);
     a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00000100) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
         else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after frame error receive!", ReadData);
+          $display("ERROR: RX_SC=%8b, not the correct value after non-byte aligned frame receive!", ReadData);
           TbErrorCnt++;
         end
+
+    // Verify content of Rx_Buff registers
+    for(int i=0; i<Size; i++) begin
+      ReadAddress(`Rx_Buff, ReadData);
+      a_NonByteAligned_RxBuff_content: assert (ReadData == 0) else begin
+        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after non-byte aligned frame receive!", i, ReadData);
+        TbErrorCnt++;
+      end
+    end
 
   endtask
 
