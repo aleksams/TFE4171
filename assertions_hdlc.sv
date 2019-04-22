@@ -65,7 +65,7 @@ module assertions_hdlc (
                                   else begin $display("ERROR: Flag sequence did not generate FlagDetect"); ErrCntAssertions++; end
 
   property Generate_StartofFrame_Flag;
-    @(posedge Clk) $rose(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_Flag;
+    @(posedge Clk) $rose(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_flag;
   endproperty
 
   Generate_StartofFrame_Flag_Assert    :  assert property (Generate_StartofFrame_Flag) $display("PASS: Generate_StartofFrame_flag");
@@ -73,7 +73,7 @@ module assertions_hdlc (
 
 
   property Generate_EndofFrame_Flag;
-    @(posedge Clk) Tx_FCSDone and !Tx_AbortedTrans |-> ##1 Tx_Flag;
+    @(posedge Clk) Tx_FCSDone and !Tx_AbortedTrans |-> ##1 Tx_flag;
 endproperty
 
 Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag) $display("PASS: Generate_EndofFrame_Flag_flag");
