@@ -12,6 +12,8 @@ module test_hdlc ();
   //RX - Internal assignments
   assign uin_hdlc.Rx_FlagDetect      = u_dut.Rx_FlagDetect;
   assign uin_hdlc.Rx_ValidFrame      = u_dut.Rx_ValidFrame;
+  assign uin_hdlc.Rx_AbortSignal     = u_dut.Rx_AbortSignal;
+  assign uin_hdlc.Rx_AbortDetect     = u_dut.Rx_AbortDetect;
 
   //TX - Internal assignments
   assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;

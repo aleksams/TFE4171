@@ -35,6 +35,8 @@ interface in_hdlc ();
   // Rx - internal
   logic       Rx_FlagDetect;
   logic       Rx_ValidFrame;
+  logic       Rx_AbortSignal;
+  logic       Rx_AbortDetect;
 
 
 endinterface
