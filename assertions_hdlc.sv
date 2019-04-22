@@ -77,7 +77,7 @@ module assertions_hdlc (
                                     else begin $display("ERROR: Tx did not generate Tx_IdlePattern"); ErrCntAssertions++; end
 
   property Generate_AbortPattern;
-    @(posedge Clk)   |-> ##1 Tx_AbortPattern;
+    @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortPattern;
   endproperty
 
   Receive_AbortPattern_Assert     :  assert property (Receive_AbortPattern) $display("PASS: Generate_AbortPattern");
