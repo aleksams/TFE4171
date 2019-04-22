@@ -17,7 +17,9 @@ module assertions_hdlc (
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
-  input logic Tx_AbortFrame
+  input logic Tx_AbortFrame,
+  input logic Tx_AbortedTrans,
+  input logic Tx_FCSDone
   );
 
   initial begin
@@ -28,6 +30,10 @@ module assertions_hdlc (
 
   sequence Rx_flag;
     !Rx ##1 Rx [*6] ##1 !Rx;
+  endsequence
+
+  sequence Tx_flag;
+    !Tx ##1 Tx [*6] ##1 !Tx;
   endsequence
 
   sequence Rx_IdlePattern;
@@ -58,6 +64,22 @@ module assertions_hdlc (
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
                                   else begin $display("ERROR: Flag sequence did not generate FlagDetect"); ErrCntAssertions++; end
 
+  property Generate_StartofFrame_Flag;
+    @(posedge Clk) $rose{Tx_ValidFrame} and !Tx_AbortedTrans |-> ##1 Tx_Flag;
+  endproperty
+
+  Generate_StartofFrame_Flag_Assert    :  assert property (Generate_StartofFrame_Flag) $display("PASS: Generate_StartofFrame_flag");
+                                          else begin $display("ERROR: Did not correctly generate StartofFrame_flag"); ErrCntAssertions++; end
+
+
+  property Generate_EndofFrame_Flag;
+    @(posedge Clk) Tx_FCSDone and !Tx_AbortedTrans |-> ##1 Tx_Flag;
+endproperty
+
+Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag) $display("PASS: Generate_EndofFrame_Flag_flag");
+else begin $display("ERROR: Did not correctly generate EndofFrame_flag"); ErrCntAssertions++; end
+
+
   //Check if receiving idle pattern
   //What signals are set when in idle? !ValidFrame
   //Rx
@@ -76,22 +98,22 @@ module assertions_hdlc (
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
                                     else begin $display("ERROR: Tx did not generate Tx_IdlePattern"); ErrCntAssertions++; end
-
+  //Add validframe
   property Generate_AbortPattern;
-    @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortPattern;
+    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##2 Tx_AbortPattern;
   endproperty
 
   Generate_AbortPattern_Assert     :  assert property (Generate_AbortPattern) $display("PASS: Generate_AbortPattern");
                                      else begin $display("ERROR: Tx did not generate Tx_AbortPattern"); ErrCntAssertions++; end
 
 
-
+  //Add validframe
   property Receive_AbortPattern;
-    @(posedge Clk) Rx_AbortPattern |-> ##1 Rx_AbortDetect;
+    @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##1 Rx_AbortDetect;
   endproperty
 
   Receive_AbortPattern_Assert      :  assert property (Receive_AbortPattern) $display("PASS: Receive_AbortPattern");
-else begin $display("ERROR: Rx input did not correctly generate abort pattern"); ErrCntAssertions++; end
+                                      else begin $display("ERROR: Rx input did not correctly generate abort pattern"); ErrCntAssertions++; end
 
   property RX_AbortSignal;
     @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##3 Rx_AbortSignal;

@@ -18,6 +18,8 @@ module test_hdlc ();
   //TX - Internal assignments
   assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;
   assign uin_hdlc.Tx_AbortFrame      = u_dut.Tx_AbortFrame;
+  assign uin_hdlc.Tx_AbortedTrans    = u_dut.Tx_AbortedTrans;
+  assign uin_hdlc.Tx_FCSDone         = u_dut.Tx_FCSDone;
 
   //Clock
   always #250ns uin_hdlc.Clk = ~uin_hdlc.Clk;
