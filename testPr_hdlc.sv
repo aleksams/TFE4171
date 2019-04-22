@@ -130,7 +130,7 @@ program testPr_hdlc(
       uin_hdlc.Rx = 1'b1;
   endtask
 
-  task MakeRxStimulus(logic [127:0][7:0] Data, int Size, int NonByteAligned=0);
+  task MakeRxStimulus(logic [127:0][7:0] Data, int Size, int NonByteAligned);
     logic [4:0] PrevData;
     PrevData = '0;
     for (int i = 0; i < Size; i++) begin
@@ -142,8 +142,8 @@ program testPr_hdlc(
           PrevData[4] = 1'b0;
         end
 
-        if(i==Size && j>2) begin
-          if(~NonByteAligned) begin
+        if(i==Size-1 && j>2) begin
+          if(!NonByteAligned) begin
             @(posedge uin_hdlc.Clk);
             uin_hdlc.Rx = Data[i][j];
 
@@ -219,7 +219,7 @@ program testPr_hdlc(
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
       OverflowData[2] = 8'hCC;
-      MakeRxStimulus(OverflowData, 3);
+      MakeRxStimulus(OverflowData, 3, 0);
     end
 
     if(Abort)
@@ -386,7 +386,7 @@ program testPr_hdlc(
     logic [127:0][7:0] data;
     logic [7:0] ReadData;
     int Size;
-    Size = 20;
+    Size = 2;
 
     Receive( Size, 0, 0, 1, 0, 0, 0, data); //NonByteAligned
 
