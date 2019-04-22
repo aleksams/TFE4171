@@ -81,7 +81,7 @@ module assertions_hdlc (
     @(posedge Clk) Tx_AbortFrame |-> ##2 Tx_AbortPattern;
   endproperty
 
-  Receive_AbortPattern_Assert     :  assert property (Receive_AbortPattern) $display("PASS: Generate_AbortPattern");
+  Generate_AbortPattern_Assert     :  assert property (Generate_AbortPattern) $display("PASS: Generate_AbortPattern");
                                      else begin $display("ERROR: Tx did not generate Tx_AbortPattern"); ErrCntAssertions++; end
 
 
@@ -91,14 +91,7 @@ module assertions_hdlc (
   endproperty
 
   Receive_AbortPattern_Assert      :  assert property (Receive_AbortPattern) $display("PASS: Receive_AbortPattern");
-                                      else begin $display("ERROR: Rx input did not correctly generate abort pattern") ErrCntAssertions++; end;
-
-  property Receive_AbortPattern;
-    @(posedge Clk) Rx_AbortPattern |-> ##1 Rx_AbortDetect;
-  endproperty
-
-  Receive_AbortPattern_Assert      :  assert property (Receive_AbortPattern) $display("PASS: Receive_AbortPattern");
-                                      else begin $display("ERROR: Rx input did not correctly generate abort pattern") ErrCntAssertions++; end;
+else begin $display("ERROR: Rx input did not correctly generate abort pattern"); ErrCntAssertions++; end
 
   property RX_AbortSignal;
     @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##3 Rx_AbortSignal;
