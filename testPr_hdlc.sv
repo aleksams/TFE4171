@@ -142,7 +142,7 @@ program testPr_hdlc(
           PrevData[4] = 1'b0;
         end
 
-        if(i==127 && j==7) begin
+        if(i==127 && j>2) begin
           if(~NonByteAligned) begin
             @(posedge uin_hdlc.Clk);
             uin_hdlc.Rx = Data[i][j];
@@ -262,7 +262,11 @@ program testPr_hdlc(
     FCSBytes = CheckReg;
   endtask
 
+//----------------------------------------
 //---------- Verification tasks ----------
+//----------------------------------------
+
+//---------------- Receive ---------------
 
   task VerifyAbortReceive();
     logic [127:0][7:0] data;
@@ -439,5 +443,9 @@ program testPr_hdlc(
     end
 
   endtask
+
+  //---------------- Transmit ---------------
+
+
 
 endprogram
