@@ -38,6 +38,8 @@ program testPr_hdlc(
     #5000ns;
     VerifyNonByteAlignedReceive();
     #5000ns;
+    VerifyNormalTransmit();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
