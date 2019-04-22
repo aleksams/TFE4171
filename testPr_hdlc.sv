@@ -241,6 +241,69 @@ program testPr_hdlc(
 
   endtask
 
+  task Transmit(int Size, int Abort, int Overflow, int Drop, output logic [127:0][7:0] TransmittedData, output logic [15:0] FCS);
+  logic [127:0][7:0] TransmitData;
+  logic       [15:0] FCSBytes;
+  logic   [2:0][7:0] OverflowData;
+  string msg;
+  if(Abort)
+    msg = "- Abort";
+  else if(Overflow)
+    msg = "- Overflow";
+  else if(Drop)
+    msg = "- Drop";
+  else
+    msg = "- Normal";
+  $display("*************************************************************");
+  $display("%t - Starting task Transmit %s", $time, msg);
+  $display("*************************************************************");
+
+  for (int i = 0; i < Size; i++) begin
+    TransmitData[i] = $urandom;
+  end
+
+  GenerateFCSBytes(Data, Size, FCSBytes);
+
+  Data = TransmitData;
+  FCS = FCSBytes;
+
+  //Enable FCS
+  if(!Overflow && !NonByteAligned)
+    WriteAddress(`Rx_SC, 8'h20);
+  else
+    WriteAddress(`Rx_SC, 8'h00);
+
+  //Generate stimulus
+  InsertFlagOrAbort(1);
+
+  MakeRxStimulus(ReceiveData, Size + 2, NonByteAligned);
+
+  if(Overflow) begin
+    OverflowData[0] = 8'h44;
+    OverflowData[1] = 8'hBB;
+    OverflowData[2] = 8'hCC;
+    MakeRxStimulus(OverflowData, 3, 0);
+  end
+
+  if(Abort)
+    InsertFlagOrAbort(0);
+  else
+    InsertFlagOrAbort(1);
+
+  @(posedge uin_hdlc.Clk);
+  uin_hdlc.Rx = 1'b1;
+
+  repeat(8)
+    @(posedge uin_hdlc.Clk);
+
+  if(Drop) begin
+    WriteAddress(`Rx_SC, 8'h22);
+    repeat(8)
+      @(posedge uin_hdlc.Clk);
+  end
+
+  endtask
+
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
     logic [23:0] CheckReg;
     CheckReg[15:8]  = data[1];
@@ -298,7 +361,6 @@ program testPr_hdlc(
   task VerifyNormalReceive();
     logic [127:0][7:0] data;
     logic [7:0]  ReadData;
-    logic [15:0] FCSBytes;
     int Size;
     Size = 10;
 
@@ -438,6 +500,34 @@ program testPr_hdlc(
 
   //---------------- Transmit ---------------
 
+  task VerifyNormalTransmit();
+    logic [127:0][7:0] Data;
+    logic [7:0]  ReadData;
+    logic [15:0] FCSBytes;
+    int Size;
+    Size = 126;
 
+    Transmit( Size, 0, 0, 0, data, FCSBytes); //Normal
+
+    wait(uin_hdlc.Tx_Done);
+
+    // Verify content of Rx_SC register
+    ReadAddress(`Rx_SC, ReadData);
+    a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
+        else begin
+          $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
+          TbErrorCnt++;
+        end
+
+    // Verify content of RxBuff registers
+    for(int i=0; i<Size; i++) begin
+      ReadAddress(`Rx_Buff, ReadData);
+      a_normal_RxBuff_content: assert (ReadData == data[i]) else begin
+        $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
+        TbErrorCnt++;
+      end
+    end
+
+  endtask
 
 endprogram
