@@ -482,9 +482,9 @@ program testPr_hdlc(
 
   task VerifyTransmittedData(logic [127:0][7:0] TransmitData, int Size, int Abort);
     logic [7:0] Flag;
-    logic [7:0] Abort;
+    logic [7:0] Abort_Flag;
     Flag = 8'b01111110;
-    Abort = 8'b11111110;
+    Abort_Flag = 8'b11111110;
 
     wait(uin_hdlc.Tx_FCSDone);
 
