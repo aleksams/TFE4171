@@ -397,7 +397,7 @@ program testPr_hdlc(
     Receive( Size, 0, 0, 1, 0, 0, 0, data); //NonByteAligned
 
     ReadAddress(`Rx_SC, ReadData);
-    a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00100000) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
+    a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00000100) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
         else begin
           $display("ERROR: RX_SC=%8b, not the correct value after frame error receive!", ReadData);
           TbErrorCnt++;
