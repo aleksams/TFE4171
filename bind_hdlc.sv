@@ -17,7 +17,9 @@ module bind_hdlc ();
     .Rx_AbortDetect(uin_hdlc.Rx_AbortDetect),
     .Tx(uin_hdlc.Tx),
     .Tx_ValidFrame(uin_hdlc.Tx_ValidFrame),
-    .Tx_AbortFrame(uin_hdlc.Tx_AbortFrame)
+    .Tx_AbortFrame(uin_hdlc.Tx_AbortFrame),
+    .Tx_AbortedTrans(uin_hdlc.Tx_AbortedTrans),
+    .Tx_FCSDone(uin_hdlc.Tx_FCSDone)
   );
 
 endmodule
