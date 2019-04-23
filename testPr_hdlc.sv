@@ -261,6 +261,8 @@ program testPr_hdlc(
   for (int i = 0; i < Size; i++) begin
     Data[i] = $urandom;
   end
+  Data[Size]   = '0;
+  Data[Size+1] = '0;
 
   GenerateFCSBytes(Data, Size, FCSBytes);
 
