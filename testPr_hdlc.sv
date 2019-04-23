@@ -243,15 +243,13 @@ program testPr_hdlc(
 
   endtask
 
-  task Transmit(int Size, int Abort, int Overflow, int Drop, output logic [127:0][7:0] TransmitData);
+  task Transmit(int Size, int Abort, int Drop, output logic [127:0][7:0] TransmitData);
   logic [127:0][7:0] Data;
   logic       [15:0] FCSBytes;
   logic   [2:0][7:0] OverflowData;
   string msg;
   if(Abort)
     msg = "- Abort";
-  else if(Overflow)
-    msg = "- Overflow";
   else if(Drop)
     msg = "- Drop";
   else
@@ -263,17 +261,19 @@ program testPr_hdlc(
   for (int i = 0; i < Size; i++) begin
     Data[i] = $urandom;
   end
+  Data[Size]   = '0;
+  Data[Size+1] = '0;
 
   GenerateFCSBytes(Data, Size, FCSBytes);
 
-  TransmitData         = Data;
-  TransmitData[Size]   = FCSBytes;
-  TransmitData[Size+1] = FCSBytes;
+  Data[Size]   = FCSBytes[7:0];
+  Data[Size+1] = FCSBytes[15:8];
+  TransmitData = Data;
 
   //Write to Tx Buffer
-  for (int i = 0; i < Size+2; i++) begin
+  for (int i = 0; i < Size; i++) begin
     @(posedge uin_hdlc.Clk);
-    WriteAddress(`Tx_Buff, 8'h02);
+    WriteAddress(`Tx_Buff, Data[i]);
   end
 
   //Start transmission and verify Tx output
@@ -492,6 +492,8 @@ program testPr_hdlc(
 
     wait(uin_hdlc.Tx_ValidFrame);
 
+    @(posedge uin_hdlc.Clk);
+
     // Check Flag
     for(int i = 0; i < 8; i++) begin
       @(posedge uin_hdlc.Clk);
@@ -513,6 +515,8 @@ program testPr_hdlc(
           end
         if(&PrevData) begin
           @(posedge uin_hdlc.Clk);
+          PrevData = PrevData >> 1;
+          PrevData[4] = uin_hdlc.Tx;
           a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
               $display("ERROR: TX=%1b, no zero inserted!", uin_hdlc.Tx);
               TbErrorCnt++;
@@ -539,7 +543,7 @@ program testPr_hdlc(
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, 0, 0, TransmittedData); //Normal
+    Transmit( Size, 0, 0, TransmittedData); //Normal
 
     wait(uin_hdlc.Tx_Done);
 
