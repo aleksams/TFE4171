@@ -19,7 +19,8 @@ module bind_hdlc ();
     .Tx_ValidFrame(uin_hdlc.Tx_ValidFrame),
     .Tx_AbortFrame(uin_hdlc.Tx_AbortFrame),
     .Tx_AbortedTrans(uin_hdlc.Tx_AbortedTrans),
-    .Tx_FCSDone(uin_hdlc.Tx_FCSDone)
+    .Tx_FCSDone(uin_hdlc.Tx_FCSDone),
+    .Tx_WriteFCS(uin_hdlc.Tx_WriteFCS)
   );
 
 endmodule

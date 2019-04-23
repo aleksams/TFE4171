@@ -34,6 +34,7 @@ interface in_hdlc ();
   logic       Tx_AbortFrame;
   logic       Tx_AbortedTrans;
   logic       Tx_FCSDone;
+  logic       Tx_WriteFCS;
 
   // Rx - internal
   logic       Rx_FlagDetect;
