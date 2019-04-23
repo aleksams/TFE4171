@@ -517,7 +517,9 @@ program testPr_hdlc(
           end
         if(&PrevData) begin
           @(posedge uin_hdlc.Clk);
-          a_ZeroInsertion: assert (uin_hdlc.Tx == 0) $display ("PASS: TX=%1b, no zero inserted!", uin_hdlc.Tx);
+          PrevData = PrevData >> 1;
+          PrevData[4] = uin_hdlc.Tx;
+          a_ZeroInsertion: assert (uin_hdlc.Tx == 0) $display ("PASS: TX=%1b, zero inserted!", uin_hdlc.Tx);
             else begin
               $display("ERROR: TX=%1b, no zero inserted!", uin_hdlc.Tx);
               TbErrorCnt++;
