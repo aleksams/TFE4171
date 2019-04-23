@@ -271,9 +271,9 @@ program testPr_hdlc(
   TransmitData[Size+1] = FCSBytes;
 
   //Write to Tx Buffer
-  for (int i = 0; i < Size+2; i++) begin
+  for (int i = 0; i < Size; i++) begin
     @(posedge uin_hdlc.Clk);
-    WriteAddress(`Tx_Buff, 8'h02);
+    WriteAddress(`Tx_Buff, Data[i]);
   end
 
   //Start transmission and verify Tx output
@@ -497,7 +497,8 @@ program testPr_hdlc(
     // Check Flag
     for(int i = 0; i < 8; i++) begin
       @(posedge uin_hdlc.Clk);
-      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) else begin
+      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) $display ("PASS: TX=%1b, correct value in Flag!", uin_hdlc.Tx);
+        else begin
           $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
           TbErrorCnt++;
         end
@@ -509,13 +510,15 @@ program testPr_hdlc(
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
         PrevData[4] = uin_hdlc.Tx;
-        a_CorrectTxOutput: assert (uin_hdlc.Tx == TransmitData[i][j]) else begin
+        a_CorrectTxOutput: assert (uin_hdlc.Tx == TransmitData[i][j]) $display ("PASS: TX=%1b, correct TX data value!", uin_hdlc.Tx);
+          else begin
             $display("ERROR: TX=%1b, not the correct TX data value!", uin_hdlc.Tx);
             TbErrorCnt++;
           end
         if(&PrevData) begin
           @(posedge uin_hdlc.Clk);
-          a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
+          a_ZeroInsertion: assert (uin_hdlc.Tx == 0) $display ("PASS: TX=%1b, no zero inserted!", uin_hdlc.Tx);
+            else begin
               $display("ERROR: TX=%1b, no zero inserted!", uin_hdlc.Tx);
               TbErrorCnt++;
             end
@@ -526,7 +529,8 @@ program testPr_hdlc(
     // Check Flag
     for(int i = 0; i < 8; i++) begin
       @(posedge uin_hdlc.Clk);
-      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) else begin
+      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) $display ("PASS: TX=%1b, correct value in Flag!", uin_hdlc.Tx);
+        else begin
           $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
           TbErrorCnt++;
         end
