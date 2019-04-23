@@ -492,6 +492,8 @@ program testPr_hdlc(
 
     wait(uin_hdlc.Tx_ValidFrame);
 
+    @(posedge uin_hdlc.Clk);
+
     // Check Flag
     for(int i = 0; i < 8; i++) begin
       @(posedge uin_hdlc.Clk);
