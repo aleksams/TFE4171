@@ -29,11 +29,11 @@ module assertions_hdlc (
 
   // Sequences
 
-  sequence Rx_flag;
+  sequence Rx_Flag;
     !Rx ##1 Rx [*6] ##1 !Rx;
   endsequence
 
-  sequence Tx_flag;
+  sequence Tx_Flag;
     !Tx ##1 Tx [*6] ##1 !Tx;
   endsequence
 
@@ -59,14 +59,14 @@ module assertions_hdlc (
 
   // Check if flag sequence is detected
   property Receive_FlagDetect;
-    @(posedge Clk) Rx_flag |-> ##2 Rx_FlagDetect;
+    @(posedge Clk) Rx_Flag |-> ##2 Rx_FlagDetect;
   endproperty
 
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
                                   else begin $display("ERROR: Flag sequence did not generate FlagDetect"); ErrCntAssertions++; end
 
   property Generate_StartofFrame_Flag;
-    @(posedge Clk) $rose(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##2 Tx_flag;
+    @(posedge Clk) $rose(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##2 Tx_Flag;
   endproperty
 
   Generate_StartofFrame_Flag_Assert    :  assert property (Generate_StartofFrame_Flag) $display("PASS: Generate_StartofFrame_flag");
@@ -74,7 +74,7 @@ module assertions_hdlc (
 
 
   property Generate_EndofFrame_Flag;
-    @(posedge Clk) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_flag;
+    @(posedge Clk) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_Flag;
 endproperty
 
 Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag) $display("PASS: Generate_EndofFrame_Flag_flag");
@@ -94,7 +94,7 @@ Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag)
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
   property Generate_IdlePattern;
-    @(posedge Clk) !Tx_ValidFrame |-> ##1 Tx_IdlePattern;
+    @(posedge Clk) $fell(Tx_ValidFrame) |-> ##1 Tx_Flag ##0 Tx until_with Tx_ValidFrame;
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
