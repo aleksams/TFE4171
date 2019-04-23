@@ -98,7 +98,7 @@ Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag)
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
-else begin $display("ERROR: Tx did not generate Tx_IdlePattern(%t)",$time); ErrCntAssertions++; end
+else begin $display("ERROR(%t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
   //Add validframe
   property Generate_AbortPattern;
     @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##2 Tx_AbortPattern;
