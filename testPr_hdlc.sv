@@ -243,15 +243,13 @@ program testPr_hdlc(
 
   endtask
 
-  task Transmit(int Size, int Abort, int Overflow, int Drop, output logic [127:0][7:0] TransmitData);
+  task Transmit(int Size, int Abort, int Drop, output logic [127:0][7:0] TransmitData);
   logic [127:0][7:0] Data;
   logic       [15:0] FCSBytes;
   logic   [2:0][7:0] OverflowData;
   string msg;
   if(Abort)
     msg = "- Abort";
-  else if(Overflow)
-    msg = "- Overflow";
   else if(Drop)
     msg = "- Drop";
   else
@@ -267,8 +265,8 @@ program testPr_hdlc(
   GenerateFCSBytes(Data, Size, FCSBytes);
 
   TransmitData         = Data;
-  TransmitData[Size]   = FCSBytes;
-  TransmitData[Size+1] = FCSBytes;
+  TransmitData[Size]   = FCSBytes[7:0];
+  TransmitData[Size+1] = FCSBytes[15:8];
 
   //Write to Tx Buffer
   for (int i = 0; i < Size; i++) begin
