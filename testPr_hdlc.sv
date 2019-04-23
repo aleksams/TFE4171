@@ -545,7 +545,7 @@ program testPr_hdlc(
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, 0, 0, TransmittedData); //Normal
+    Transmit( Size, 0, 0, TransmittedData); //Normal
 
     wait(uin_hdlc.Tx_Done);
 
