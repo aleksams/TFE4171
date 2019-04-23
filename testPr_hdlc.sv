@@ -264,9 +264,9 @@ program testPr_hdlc(
 
   GenerateFCSBytes(Data, Size, FCSBytes);
 
-  TransmitData         = Data;
-  TransmitData[Size]   = FCSBytes[7:0];
-  TransmitData[Size+1] = FCSBytes[15:8];
+  Data[Size]   = FCSBytes[7:0];
+  Data[Size+1] = FCSBytes[15:8];
+  TransmitData = Data;
 
   //Write to Tx Buffer
   for (int i = 0; i < Size; i++) begin
