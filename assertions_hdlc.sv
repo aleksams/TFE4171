@@ -94,11 +94,11 @@ Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag)
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
   property Generate_IdlePattern;
-    @(posedge Clk) $fell(Tx_ValidFrame) |-> ##1 Tx_Flag ##0 (Tx until_with Tx_ValidFrame);
+    @(posedge Clk) $fell(Tx_ValidFrame) |-> ##1 Tx_Flag ##0 (Tx throughout Tx_ValidFrame [->1]);
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
-else begin $display("ERROR(%t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
+else begin $display("ERROR(%t)): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
   //Add validframe
   property Generate_AbortPattern;
     @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##2 Tx_AbortPattern;
