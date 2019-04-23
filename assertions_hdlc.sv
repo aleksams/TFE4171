@@ -74,7 +74,7 @@ module assertions_hdlc (
 
 
   property Generate_EndofFrame_Flag;
-    @(posedge Clk) $fell(Tx_WriteFCS) and !Tx_AbortedTrans |-> ##1 Tx_flag;
+    @(posedge Clk) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_flag;
 endproperty
 
 Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag) $display("PASS: Generate_EndofFrame_Flag_flag");
