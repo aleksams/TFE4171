@@ -123,4 +123,12 @@ else begin $display("ERROR(%t): Rx input did not correctly generate abort patter
   RX_AbortSignal_Assert            : assert property (RX_AbortSignal)$display("PASS: Abort signal");
 else begin $display("ERROR(%t): AbortSignal did not go high after AbortDetect during validframe",$time); ErrCntAssertions++; end
 
+  property Tx_AbortTransmission;
+    @(posedge Clk) Tx_AbortFrame |-> ##1 Tx_AbortedTrans;
+  endproperty
+
+  Tx_AbortTransmission_Assert            : assert property (Tx_AbortTransmission)$display("PASS: Tx_AbortedTrans asserted after Tx_AbortFrame");
+else begin $display("ERROR(%t): Tx_AbortedTrans did not get asserted after Tx_AbortFrame went high",$time); ErrCntAssertions++; end
+
+
 endmodule
