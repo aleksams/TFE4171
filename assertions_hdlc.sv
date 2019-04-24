@@ -110,7 +110,7 @@ else begin $display("ERROR(%t): Tx did not generate Tx_AbortPattern",$time); Err
 
   //Add validframe
   property Receive_AbortPattern;
-    @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##1 Rx_AbortDetect;
+    @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##2 Rx_AbortDetect;
   endproperty
 
   Receive_AbortPattern_Assert      :  assert property (Receive_AbortPattern) $display("PASS: Receive_AbortPattern");
