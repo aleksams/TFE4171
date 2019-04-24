@@ -291,7 +291,7 @@ program testPr_hdlc(
       end
 
       // Check for zero insertion, stop after size bytes has been transmitted
-      if(&PrevData[7:3] && (j < Size)) begin
+      if(&PrevData[7:3] && (j < Size || j > AbortTime)) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
         PrevData[7] = uin_hdlc.Tx;
