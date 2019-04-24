@@ -276,20 +276,20 @@ program testPr_hdlc(
       DataByte = DataByte >> 1;
       DataByte[7] = uin_hdlc.Tx;
 
+      // Check for End or Abort flag
+      if((PrevData == Flag) || (PrevData == AbortFlag)) begin
+        break;
+      end
+
       // Check for zero insertion
       if(&PrevData[7:3]) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
         PrevData[4] = uin_hdlc.Tx;
         a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
-            $display("ERROR: TX=%1b, no zero inserted!", uin_hdlc.Tx);
+            $display("ERROR: No zero inserted!");
             TbErrorCnt++;
         end
-      end
-
-      // Check for End or Abort flag
-      if((PrevData == Flag) || (PrevData == AbortFlag)) begin
-        break;
       end
 
       i++;
