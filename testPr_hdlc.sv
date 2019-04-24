@@ -40,6 +40,8 @@ program testPr_hdlc(
     #5000ns;
     VerifyNormalTransmit();
     #5000ns;
+    VerifyAbortTransmit();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
@@ -52,9 +54,11 @@ program testPr_hdlc(
     if((TbErrorCnt+uin_hdlc.ErrCntAssertions) > 0) begin
       $display("\n\n*********************************");
       $display("*                               *");
+      $display("*                     XX   XX   *");
       $display("*                      XX XX    *");
       $display("*  SIMULATION FAILED!   XXX     *");
       $display("*                      XX XX    *");
+      $display("*                     XX   XX   *");
       $display("*                               *");
       $display("* \tAssertion Errors: %0d\t  *", TbErrorCnt + uin_hdlc.ErrCntAssertions);
       $display("*                               *");
@@ -247,13 +251,18 @@ program testPr_hdlc(
   
   task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
     logic [7:0] Flag, AbortFlag, DataByte, PrevData;
-    int i, j;
+    int i, j, AbortTime;
     Flag = 8'b01111110;
     AbortFlag = 8'b11111110;
     PrevData = '0;
     DataByte = '0;
     i = 0;
     j = 0;
+    if(Abort) begin
+      AbortTime = ($urandom % (Size-1))+1;
+    end else begin
+      AbortTime = -1;
+    end
 
     wait(uin_hdlc.Tx_ValidFrame);
 
@@ -297,6 +306,11 @@ program testPr_hdlc(
       if(i%8 == 0) begin
         ReadData[j] = DataByte;
         j++;
+      end
+
+      // Insert Abort signal
+      if(j == AbortTime) begin
+        WriteAddress(`Tx_SC, 8'h04);
       end
     end
 
@@ -557,6 +571,18 @@ program testPr_hdlc(
       $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
       TbErrorCnt++;
     end
+
+  endtask
+
+  task VerifyAbortTransmit();
+    logic [127:0][7:0] WrittenData;
+    logic [127:0][7:0] TransmittedData;
+    logic [7:0]  ReadData;
+    logic [15:0] FCSBytes;
+    int Size;
+    Size = 64;
+
+    Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
 
   endtask
 
