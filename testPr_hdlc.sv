@@ -63,6 +63,7 @@ program testPr_hdlc(
     else begin
       $display("\n\n*********************************");
       $display("*                               *");
+      $display("*                            XX *");
       $display("*                           XX  *");
       $display("*  SIMULATION PASSED!   XX XX   *");
       $display("*                        XXX    *");
@@ -243,15 +244,68 @@ program testPr_hdlc(
 
   endtask
 
-  task Transmit(int Size, int Abort, int Drop, output logic [127:0][7:0] TransmitData);
-  logic [127:0][7:0] Data;
-  logic       [15:0] FCSBytes;
-  logic   [2:0][7:0] OverflowData;
+  
+  task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
+    logic [7:0] Flag, AbortFlag, DataByte, PrevData;
+    int i, j;
+    Flag = 8'b01111110;
+    AbortFlag = 8'b11111110;
+    PrevData = '0;
+    DataByte = '0;
+    i = 0;
+    j = 0;
+
+    wait(uin_hdlc.Tx_ValidFrame);
+
+    @(posedge uin_hdlc.Clk);
+
+    // Check start flag
+    for(int i = 0; i < 8; i++) begin
+      @(posedge uin_hdlc.Clk);
+      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) else begin
+          $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
+          TbErrorCnt++;
+        end
+    end
+
+    // Read data
+    while (1) begin
+      @(posedge uin_hdlc.Clk);
+      PrevData = PrevData >> 1;
+      PrevData[7] = uin_hdlc.Tx;
+      DataByte = DataByte >> 1;
+      DataByte[7] = uin_hdlc.Tx;
+
+      // Check for End or Abort flag
+      if((PrevData == Flag) || (PrevData == AbortFlag)) begin
+        break;
+      end
+
+      // Check for zero insertion, stop after size bytes has been transmitted
+      if(&PrevData[7:3] && (j < Size)) begin
+        @(posedge uin_hdlc.Clk);
+        PrevData = PrevData >> 1;
+        PrevData[7] = uin_hdlc.Tx;
+        a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
+            $display("ERROR: No zero inserted!");
+            TbErrorCnt++;
+        end
+      end
+
+      i++;
+      // Save data byte
+      if(i%8 == 0) begin
+        ReadData[j] = DataByte;
+        j++;
+      end
+    end
+
+  endtask
+
+  task Transmit(int Size, int Abort, output logic [127:0][7:0] WrittenData, output logic [127:0][7:0] TransmittedData, output logic [15:0] FCSBytes);
   string msg;
   if(Abort)
     msg = "- Abort";
-  else if(Drop)
-    msg = "- Drop";
   else
     msg = "- Normal";
   $display("*************************************************************");
@@ -259,27 +313,23 @@ program testPr_hdlc(
   $display("*************************************************************");
 
   for (int i = 0; i < Size; i++) begin
-    Data[i] = $urandom;
+    WrittenData[i] = $urandom;
   end
-  Data[Size]   = '0;
-  Data[Size+1] = '0;
+  WrittenData[Size]   = '0;
+  WrittenData[Size+1] = '0;
 
-  GenerateFCSBytes(Data, Size, FCSBytes);
-
-  Data[Size]   = FCSBytes[7:0];
-  Data[Size+1] = FCSBytes[15:8];
-  TransmitData = Data;
+  GenerateFCSBytes(WrittenData, Size, FCSBytes);
 
   //Write to Tx Buffer
   for (int i = 0; i < Size; i++) begin
     @(posedge uin_hdlc.Clk);
-    WriteAddress(`Tx_Buff, Data[i]);
+    WriteAddress(`Tx_Buff, WrittenData[i]);
   end
 
-  //Start transmission and verify Tx output
+  //Start transmission and read Tx output
   WriteAddress(`Tx_SC, 8'h02);
 
-  VerifyTransmittedData(Data, Size + 2, Abort);
+  ReadTransmittedData(Size+2, Abort, TransmittedData);
 
   repeat(8)
     @(posedge uin_hdlc.Clk);
@@ -482,87 +532,31 @@ program testPr_hdlc(
 
   //---------------- Transmit ---------------
 
-  task VerifyTransmittedData(logic [127:0][7:0] TransmitData, int Size, int Abort);
-    logic [7:0] Flag;
-    logic [7:0] Abort_Flag;
-    logic [4:0] PrevData;
-    Flag = 8'b01111110;
-    Abort_Flag = 8'b11111110;
-    PrevData = '0;
-
-    wait(uin_hdlc.Tx_ValidFrame);
-
-    @(posedge uin_hdlc.Clk);
-
-    // Check Flag
-    for(int i = 0; i < 8; i++) begin
-      @(posedge uin_hdlc.Clk);
-      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) else begin
-          $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
-          TbErrorCnt++;
-        end
-    end
-
-    // Check Data
-    for(int i = 0; i < Size; i++) begin
-      for(int j = 0; j < 8; j++) begin
-        @(posedge uin_hdlc.Clk);
-        PrevData = PrevData >> 1;
-        PrevData[4] = uin_hdlc.Tx;
-        a_CorrectTxOutput: assert (uin_hdlc.Tx == TransmitData[i][j]) else begin
-            $display("ERROR: TX=%1b, not the correct TX data value!", uin_hdlc.Tx);
-            TbErrorCnt++;
-          end
-        if(&PrevData) begin
-          @(posedge uin_hdlc.Clk);
-          PrevData = PrevData >> 1;
-          PrevData[4] = uin_hdlc.Tx;
-          a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
-              $display("ERROR: TX=%1b, no zero inserted!", uin_hdlc.Tx);
-              TbErrorCnt++;
-            end
-        end
-      end
-    end
-
-    // Check Flag
-    for(int i = 0; i < 8; i++) begin
-      @(posedge uin_hdlc.Clk);
-      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) else begin
-          $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
-          TbErrorCnt++;
-        end
-    end
-
-  endtask
-
   task VerifyNormalTransmit();
+    logic [127:0][7:0] WrittenData;
     logic [127:0][7:0] TransmittedData;
     logic [7:0]  ReadData;
     logic [15:0] FCSBytes;
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, 0, TransmittedData); //Normal
+    Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
 
     wait(uin_hdlc.Tx_Done);
 
-    // Verify content of Rx_SC register
-    /*ReadAddress(`Rx_SC, ReadData);
-    a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
-        else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
-          TbErrorCnt++;
-        end
-
-    // Verify content of RxBuff registers
-    for(int i=0; i<Size; i++) begin
-      ReadAddress(`Rx_Buff, ReadData);
-      a_normal_RxBuff_content: assert (ReadData == data[i]) else begin
-        $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
+    // Verify Transmitted Data
+    for(int i = 0; i < Size; i++) begin
+      a_CorrectTxData: assert (TransmittedData[i] == WrittenData[i]) else begin
+        $display("ERROR: Tx_Byte[%0d]=%8b, not the correct TX byte value!", i, TransmittedData[i]);
         TbErrorCnt++;
       end
-    end*/
+    end
+
+    // Verify FCS Bytes
+    a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
+      $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
+      TbErrorCnt++;
+    end
 
   endtask
 
