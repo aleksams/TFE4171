@@ -261,7 +261,7 @@ program testPr_hdlc(
     if(Abort) begin
       AbortTime = ($urandom % (Size-1))+1;
     end else begin
-      AbortTime = -1;
+      AbortTime = 2*Size;
     end
 
     wait(uin_hdlc.Tx_ValidFrame);
