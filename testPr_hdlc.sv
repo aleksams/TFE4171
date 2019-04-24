@@ -248,8 +248,9 @@ program testPr_hdlc(
   task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
     logic [7:0] Flag, AbortFlag, DataByte;
     logic [4:0] PrevData;
+    int i, j;
     Flag = 8'b01111110;
-    Abort_Flag = 8'b11111110;
+    AbortFlag = 8'b11111110;
     PrevData = '0;
     DataByte = '0;
     i = 0;
@@ -296,7 +297,7 @@ program testPr_hdlc(
       // Save data byte
       if(i%8 == 0) begin
         ReadData[j] = DataByte;
-        j++
+        j++;
       end
     end
 
