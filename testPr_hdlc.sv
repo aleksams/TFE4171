@@ -309,7 +309,7 @@ program testPr_hdlc(
       end
 
       // Insert Abort signal
-      if(j == AbortTime) begin
+      if(j == AbortTime && i%8 == 0) begin
         WriteAddress(`Tx_SC, 8'h04);
       end
     end
