@@ -246,8 +246,7 @@ program testPr_hdlc(
 
   
   task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
-    logic [7:0] Flag, AbortFlag, DataByte;
-    logic [4:0] PrevData;
+    logic [7:0] Flag, AbortFlag, DataByte, PrevData;
     int i, j;
     Flag = 8'b01111110;
     AbortFlag = 8'b11111110;
@@ -273,12 +272,12 @@ program testPr_hdlc(
     while (1) begin
       @(posedge uin_hdlc.Clk);
       PrevData = PrevData >> 1;
-      PrevData[4] = uin_hdlc.Tx;
+      PrevData[7] = uin_hdlc.Tx;
       DataByte = DataByte >> 1;
       DataByte[7] = uin_hdlc.Tx;
 
       // Check for zero insertion
-      if(&PrevData) begin
+      if(&PrevData[7:3]) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
         PrevData[4] = uin_hdlc.Tx;
@@ -289,7 +288,7 @@ program testPr_hdlc(
       end
 
       // Check for End or Abort flag
-      if((DataByte == Flag) || (DataByte == AbortFlag)) begin
+      if((PrevData == Flag) || (PrevData == AbortFlag)) begin
         break;
       end
 
