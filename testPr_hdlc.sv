@@ -281,8 +281,8 @@ program testPr_hdlc(
         break;
       end
 
-      // Check for zero insertion
-      if(&PrevData[7:3]) begin
+      // Check for zero insertion, stop after size bytes has been transmitted
+      if(&PrevData[7:3] && (j < Size)) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
         PrevData[7] = uin_hdlc.Tx;
@@ -553,7 +553,7 @@ program testPr_hdlc(
     end
 
     // Verify FCS Bytes
-    a_CorrectTxFCS: assert ({TransmittedData[Size], TransmittedData[Size+1]} == FCSBytes) else begin
+    a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
       $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
       TbErrorCnt++;
     end
