@@ -285,7 +285,7 @@ program testPr_hdlc(
       if(&PrevData[7:3]) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
-        PrevData[4] = uin_hdlc.Tx;
+        PrevData[7] = uin_hdlc.Tx;
         a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
             $display("ERROR: No zero inserted!");
             TbErrorCnt++;
