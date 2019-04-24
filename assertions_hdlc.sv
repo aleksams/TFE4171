@@ -85,7 +85,7 @@ Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag)
   //What signals are set when in idle? !ValidFrame
   //Rx
   property Receive_IdlePattern;
-    @(posedge Clk) Rx_IdlePattern |-> ##1 !Rx_ValidFrame;
+    @(posedge Clk) disable iff(Rx_AbortDetect) Rx_IdlePattern |-> ##1 !Rx_ValidFrame;
   endproperty
 
   Receive_IdlePattern_Assert    :  assert property (Receive_IdlePattern) //$display("PASS: Receive_IdlePattern");
