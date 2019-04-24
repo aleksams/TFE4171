@@ -85,11 +85,11 @@ Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag)
   //What signals are set when in idle? !ValidFrame
   //Rx
   property Receive_IdlePattern;
-    @(posedge Clk) Rx_IdlePattern |-> ##2 !Rx_ValidFrame;
+    @(posedge Clk) Rx_IdlePattern |-> ##1 !Rx_ValidFrame;
   endproperty
 
   Receive_IdlePattern_Assert    :  assert property (Receive_IdlePattern) //$display("PASS: Receive_IdlePattern");
-                                   else begin $display("ERROR: Rx input did not correctly generate idle pattern"); ErrCntAssertions++; end
+                                   else begin $display("ERROR(%t)): Rx input did not correctly generate idle pattern",$time); ErrCntAssertions++; end
 
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
