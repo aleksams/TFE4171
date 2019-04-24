@@ -245,7 +245,7 @@ program testPr_hdlc(
   endtask
 
   
-  task ReadTransmittedData(logic [127:0][7:0] ReadData, int Size, int Abort);
+  task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
     logic [7:0] Flag, AbortFlag, DataByte;
     logic [4:0] PrevData;
     Flag = 8'b01111110;
@@ -287,7 +287,7 @@ program testPr_hdlc(
         end
       end
 
-      // Check for end or abort flag
+      // Check for End or Abort flag
       if((DataByte == Flag) || (DataByte == AbortFlag)) begin
         break;
       end
@@ -329,7 +329,7 @@ program testPr_hdlc(
   //Start transmission and read Tx output
   WriteAddress(`Tx_SC, 8'h02);
 
-  ReadTransmittedData(TransmittedData, Size + 2, Abort);
+  ReadTransmittedData(Size+2, Abort, TransmittedData);
 
   repeat(8)
     @(posedge uin_hdlc.Clk);
