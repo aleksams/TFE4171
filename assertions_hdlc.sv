@@ -143,7 +143,7 @@ module assertions_hdlc (
                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
   property RX_ReadReady;
-    @(posedge Clk) Rx_EoF and !RX_AbortSignal and !Rx_FrameError |-> ##1 Rx_Ready;
+    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##1 Rx_Ready;
   endproperty
 
   RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
