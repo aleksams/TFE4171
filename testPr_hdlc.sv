@@ -318,13 +318,11 @@ program testPr_hdlc(
 
   endtask
 
-  task Transmit(int Size, int Abort, int Full, output logic [127:0][7:0] WrittenData, output logic [127:0][7:0] TransmittedData, output logic [15:0] FCSBytes);
+  task Transmit(int Size, int Abort, output logic [127:0][7:0] WrittenData, output logic [127:0][7:0] TransmittedData, output logic [15:0] FCSBytes);
   logic [7:0]  ReadData;
   string msg;
   if(Abort)
     msg = "- Abort";
-  else if (Full)
-    msg = "- Full TxBuff";
   else
     msg = "- Normal";
   $display("*************************************************************");
@@ -346,11 +344,13 @@ program testPr_hdlc(
   end
 
   //Verify Tx_Full Asserted
-  if(Full) begin
-    ReadAddress(`Tx_SC, ReadData);
-    a_TxFullAsserted: assert (ReadData == 8'h10) $display("PASS: Generate_EndofFrame_Flag_flag");
+  if(Size >= `BUFF_SIZE) begin
+    //Wait for signal propagation
+    repeat(2)
+      @(posedge uin_hdlc.Clk);
+    a_TxFullAsserted: assert (uin_hdlc.Tx_Full == 1'b1) $display("PASS: a_TxFullAsserted");
     else begin
-      $display("ERROR: Tx_Full=%0h, not asserted after writing 126 bytes or more to TxBuff!", ReadData);
+      $display("ERROR: Tx_Full=%0b, not asserted after writing 126 bytes or more to TxBuff!", uin_hdlc.Tx_Full);
       TbErrorCnt++;
     end
   end
@@ -569,7 +569,7 @@ program testPr_hdlc(
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, 0, WrittenData, TransmittedData, FCSBytes); //Normal
+    Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
 
     wait(uin_hdlc.Tx_Done);
 
@@ -597,7 +597,7 @@ program testPr_hdlc(
     int Size;
     Size = 64;
 
-    Transmit( Size, 1, 0, WrittenData, TransmittedData, FCSBytes); //Abort
+    Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
 
   endtask
 
@@ -609,7 +609,7 @@ program testPr_hdlc(
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, 1, WrittenData, TransmittedData, FCSBytes); //Full TxBuff
+    Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
 
     // Verify Transmitted Data
     for(int i = 0; i < Size; i++) begin
