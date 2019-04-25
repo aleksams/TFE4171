@@ -63,14 +63,14 @@ module assertions_hdlc (
   endproperty
 
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
-                                  else begin $display("ERROR(%t): Flag sequence did not generate FlagDetect",$time); ErrCntAssertions++; end
+                                  else begin $display("ERROR(%0t): Flag sequence did not generate FlagDetect",$time); ErrCntAssertions++; end
 
   property Generate_StartofFrame_Flag;
     @(posedge Clk) $rose(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##2 Tx_Flag;
   endproperty
 
   Generate_StartofFrame_Flag_Assert    :  assert property (Generate_StartofFrame_Flag) $display("PASS: Generate_StartofFrame_flag");
-                                          else begin $display("ERROR(%t): Did not correctly generate StartofFrame_flag",$time); ErrCntAssertions++; end
+                                          else begin $display("ERROR(%0t): Did not correctly generate StartofFrame_flag",$time); ErrCntAssertions++; end
 
 
   property Generate_EndofFrame_Flag;
@@ -78,7 +78,7 @@ module assertions_hdlc (
   endproperty
 
   Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag) $display("PASS: Generate_EndofFrame_Flag_flag");
-                                      else begin $display("ERROR(%t): Did not correctly generate EndofFrame_flag",$time); ErrCntAssertions++; end
+                                        else begin $display("ERROR(%0t): Did not correctly generate EndofFrame_flag",$time); ErrCntAssertions++; end
 
 
   //Check if receiving idle pattern
@@ -89,7 +89,7 @@ module assertions_hdlc (
   endproperty
 
   Receive_IdlePattern_Assert    :  assert property (Receive_IdlePattern) //$display("PASS: Receive_IdlePattern");
-                                   else begin $display("ERROR(%t): Rx input did not correctly generate idle pattern",$time); ErrCntAssertions++; end
+                                   else begin $display("ERROR(%0t): Rx input did not correctly generate idle pattern",$time); ErrCntAssertions++; end
 
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
@@ -98,7 +98,7 @@ module assertions_hdlc (
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
-                                    else begin $display("ERROR(%t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
+                                    else begin $display("ERROR(%0t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
 
   //Add validframe
   property Receive_AbortPattern;
@@ -106,22 +106,22 @@ module assertions_hdlc (
   endproperty
 
   Receive_AbortPattern_Assert      :  assert property (Receive_AbortPattern) $display("PASS: Receive_AbortPattern");
-                                      else begin $display("ERROR(%t): Rx input did not correctly generate abort pattern",$time); ErrCntAssertions++; end
+                                      else begin $display("ERROR(%0t): Rx input did not correctly generate abort pattern",$time); ErrCntAssertions++; end
 
   //Add validframe
   property Generate_AbortPattern;
-    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##2 Tx_AbortPattern;
+    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##4 Tx_AbortPattern;
   endproperty
 
   Generate_AbortPattern_Assert     :  assert property (Generate_AbortPattern) $display("PASS: Generate_AbortPattern");
-                                      else begin $display("ERROR(%t): Tx did not generate Tx_AbortPattern",$time); ErrCntAssertions++; end
+                                      else begin $display("ERROR(%0t): Tx did not generate Tx_AbortPattern",$time); ErrCntAssertions++; end
 
   property Tx_AbortTransmission;
-    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##1 Tx_AbortedTrans;
+    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##2 Tx_AbortedTrans;
   endproperty
 
   Tx_AbortTransmission_Assert            : assert property (Tx_AbortTransmission)$display("PASS: Tx_AbortedTransmission");
-                                           else begin $display("ERROR(%t): Tx_AbortedTrans did not get asserted after Tx_AbortFrame went high",$time); ErrCntAssertions++; end
+                                           else begin $display("ERROR(%0t): Tx_AbortedTrans did not get asserted after Tx_AbortFrame went high",$time); ErrCntAssertions++; end
 
 
   property RX_AbortSignal;
@@ -129,6 +129,6 @@ module assertions_hdlc (
   endproperty
 
   RX_AbortSignal_Assert            : assert property (RX_AbortSignal)$display("PASS: Rx_Abortsignal");
-                                     else begin $display("ERROR(%t): AbortSignal did not go high after AbortDetect during validframe",$time); ErrCntAssertions++; end
+                                     else begin $display("ERROR(%0t): AbortSignal did not go high after AbortDetect during validframe",$time); ErrCntAssertions++; end
 
 endmodule
