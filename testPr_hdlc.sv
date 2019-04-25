@@ -358,7 +358,24 @@ program testPr_hdlc(
   //Start transmission and read Tx output
   WriteAddress(`Tx_SC, 8'h02);
 
-  ReadTransmittedData(Size+2, Abort, TransmittedData);
+  fork
+    begin
+      ReadTransmittedData(Size+2, Abort, TransmittedData);
+    end
+    begin
+      if(!Abort) begin
+        for(int i = 0; i < Size; i++) begin
+          wait(uin_hdlc.Tx_RdBuff);
+        end
+        @(posedge uin_hdlc.Clk);
+        a_TxDoneAsserted: assert (uin_hdlc.Tx_Done == 1'b1) $display("PASS: a_TxDoneAsserted");
+        else begin
+          $display("ERROR: Tx_Done=%0b, not asserted after reading entire TxBuff!", uin_hdlc.Tx_Done);
+          TbErrorCnt++;
+        end
+      end
+    end
+  join
 
   repeat(8)
     @(posedge uin_hdlc.Clk);

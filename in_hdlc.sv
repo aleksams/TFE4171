@@ -36,6 +36,7 @@ interface in_hdlc ();
   logic       Tx_FCSDone;
   logic       Tx_WriteFCS;
   logic       Tx_Full;
+  logic       Tx_RdBuff;
 
   // Rx - internal
   logic       Rx_FlagDetect;
