@@ -15,6 +15,7 @@ module bind_hdlc ();
     .Rx_ValidFrame(uin_hdlc.Rx_ValidFrame),
     .Rx_AbortSignal(uin_hdlc.Rx_AbortSignal),
     .Rx_AbortDetect(uin_hdlc.Rx_AbortDetect),
+    .Rx_EoF(uin_hdlc.Rx_EoF),
     .Tx(uin_hdlc.Tx),
     .Tx_ValidFrame(uin_hdlc.Tx_ValidFrame),
     .Tx_AbortFrame(uin_hdlc.Tx_AbortFrame),

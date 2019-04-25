@@ -41,6 +41,7 @@ interface in_hdlc ();
   logic       Rx_ValidFrame;
   logic       Rx_AbortSignal;
   logic       Rx_AbortDetect;
+  logic       Rx_EoF;
 
 
 endinterface

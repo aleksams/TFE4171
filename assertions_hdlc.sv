@@ -14,6 +14,7 @@ module assertions_hdlc (
   input logic Rx_ValidFrame,
   input logic Rx_AbortDetect,
   input logic Rx_AbortSignal,
+  input logic Rx_EoF,
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
@@ -130,5 +131,13 @@ module assertions_hdlc (
 
   RX_AbortSignal_Assert            : assert property (RX_AbortSignal)$display("PASS: Rx_Abortsignal");
                                      else begin $display("ERROR(%0t): AbortSignal did not go high after AbortDetect during validframe",$time); ErrCntAssertions++; end
+
+
+  property RX_EndofFrame;
+    @(posedge Clk) Rx_FlagDetect and Rx_ValidFrame |-> ##5 Rx_EoF;
+  endproperty
+
+  RX_EndofFrame_Assert            : assert property (RX_EndofFrame)$display("PASS: RX_EndofFrame");
+                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
 endmodule
