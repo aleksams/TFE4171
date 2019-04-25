@@ -261,7 +261,7 @@ program testPr_hdlc(
     if(Abort) begin
       AbortTime = ($urandom % (Size-1))+1;
     end else begin
-      AbortTime = 2*Size;
+      AbortTime = -1;
     end
 
     wait(uin_hdlc.Tx_ValidFrame);
@@ -291,7 +291,7 @@ program testPr_hdlc(
       end
 
       // Check for zero insertion, stop after size bytes has been transmitted
-      if(&PrevData[7:3] && (j < Size && j < AbortTime)) begin
+      if(&PrevData[7:3] && uin_hdlc.Tx_ValidFrame && !uin_hdlc.Tx_AbortedTrans) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
         PrevData[7] = uin_hdlc.Tx;
@@ -583,6 +583,10 @@ program testPr_hdlc(
     Size = 64;
 
     Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
+
+  endtask
+
+  task VerifyFullTxBuff();
 
   endtask
 
