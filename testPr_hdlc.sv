@@ -346,7 +346,8 @@ program testPr_hdlc(
   //Verify Tx_Full Asserted
   if(Full) begin
     ReadAddress(`Tx_SC, ReadData);
-    a_CorrectTxFCS: assert (ReadData == 8'h10) else begin
+    a_TxFullAsserted: assert (ReadData == 8'h10) $display("PASS: Generate_EndofFrame_Flag_flag");
+    else begin
       $display("ERROR: Tx_Full=%0h, not asserted after writing 126 bytes or more to TxBuff!", ReadData);
       TbErrorCnt++;
     end
