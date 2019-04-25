@@ -369,7 +369,7 @@ program testPr_hdlc(
         @(posedge uin_hdlc.Clk);
         a_TxDoneAsserted: assert (uin_hdlc.Tx_Done == 1'b1) $display("PASS: a_TxDoneAsserted");
         else begin
-          $display("ERROR: Tx_Done=%0b, not asserted after reading entire TxBuff!", uin_hdlc.Tx_Done);
+          $display("ERROR(%0t): Tx_Done=%0b, not asserted after reading entire TxBuff!", $time, uin_hdlc.Tx_Done);
           TbErrorCnt++;
         end
       end
