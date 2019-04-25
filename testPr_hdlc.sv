@@ -518,14 +518,6 @@ program testPr_hdlc(
       TbErrorCnt++;
     end
 
-    // Verify length of frame
-    ReadAddress(`Rx_Len, ReadData);
-    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
-    else begin
-      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
-      TbErrorCnt++;
-    end
-
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
       ReadAddress(`Rx_Buff, ReadData);
@@ -550,14 +542,6 @@ program testPr_hdlc(
     a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00000100) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
     else begin
       $display("ERROR: RX_SC=%8b, not the correct value after non-byte aligned frame receive!", ReadData);
-      TbErrorCnt++;
-    end
-
-    // Verify length of frame
-    ReadAddress(`Rx_Len, ReadData);
-    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
-    else begin
-      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
       TbErrorCnt++;
     end
 
