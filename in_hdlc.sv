@@ -42,6 +42,7 @@ interface in_hdlc ();
   logic       Rx_AbortSignal;
   logic       Rx_AbortDetect;
   logic       Rx_EoF;
+  logic       Rx_Ready;
 
 
 endinterface
