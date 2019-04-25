@@ -9,7 +9,7 @@
 `define Rx_SC   3'h2
 `define Rx_Buff 3'h3
 `define Rx_Len  3'h4
-`define BUFF_SIZE 128
+`define BUFF_SIZE 126
 
 
 program testPr_hdlc(
