@@ -15,6 +15,8 @@ module test_hdlc ();
   assign uin_hdlc.Rx_AbortSignal     = u_dut.Rx_AbortSignal;
   assign uin_hdlc.Rx_AbortDetect     = u_dut.Rx_AbortDetect;
   assign uin_hdlc.Rx_EoF             = u_dut.Rx_EoF;
+  assign uin_hdlc.Rx_Ready           = u_dut.Rx_Ready;
+  assign uin_hdlc.Rx_FrameError      = u_dut.Rx_FrameError;
 
   //TX - Internal assignments
   assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;
