@@ -153,6 +153,6 @@ module assertions_hdlc (
     @(posedge Clk) Rx_AbortSignal || Rx_FrameError |-> ##1 !Rx_Ready;
   endproperty
 
-  RX_ReadNotReady_Assert            : assert property (RX_ReadNotReady)$display("PASS: RX_ReadNotReady");
+  RX_ReadNotReady_Assert            : assert property (RX_ReadNotReady)//$display("PASS: RX_ReadNotReady");
                                       else begin $display("ERROR(%0t): Rx_Ready did not go low when Frame was aborted or had errors.",$time); ErrCntAssertions++; end
 endmodule
