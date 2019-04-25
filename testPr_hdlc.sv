@@ -42,6 +42,8 @@ program testPr_hdlc(
     #5000ns;
     VerifyAbortTransmit();
     #5000ns;
+    VerifyFullTxBuffTransmit();
+    #5000ns;
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
