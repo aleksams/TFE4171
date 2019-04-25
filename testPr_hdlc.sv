@@ -364,8 +364,9 @@ program testPr_hdlc(
     end
     begin
       if(!Abort) begin
-        repeat(Size)
+        for(int i = 0; i < Size; i++) begin
           wait(uin_hdlc.Tx_RdBuff);
+        end
         @(posedge uin_hdlc.Clk);
         a_TxDoneAsserted: assert (uin_hdlc.Tx_Done == 1'b1) $display("PASS: a_TxDoneAsserted");
         else begin
