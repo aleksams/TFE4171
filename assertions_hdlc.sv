@@ -134,7 +134,7 @@ module assertions_hdlc (
 
 
   property RX_EndofFrame;
-    @(posedge Clk) Rx_FlagDetect and Rx_ValidFrame |-> ##1 Rx_EoF;
+    @(posedge Clk) Rx_FlagDetect and Rx_ValidFrame |-> ##5 Rx_EoF;
   endproperty
 
   RX_EndofFrame_Assert            : assert property (RX_EndofFrame)$display("PASS: RX_EndofFrame");
