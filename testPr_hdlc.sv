@@ -364,7 +364,7 @@ program testPr_hdlc(
     end
     begin
       if(!Abort) begin
-        for(int i = 0; i < Size; i++) begin
+        for(int i = 0; i < Size-1; i++) begin
           wait(uin_hdlc.Tx_RdBuff);
           @(posedge uin_hdlc.Clk);
         end
