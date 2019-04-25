@@ -9,7 +9,7 @@
 `define Rx_SC   3'h2
 `define Rx_Buff 3'h3
 `define Rx_Len  3'h4
-`define RX_BUFF_SIZE 128
+`define BUFF_SIZE 128
 
 
 program testPr_hdlc(
@@ -290,7 +290,7 @@ program testPr_hdlc(
         break;
       end
 
-      // Check for zero insertion, stop after size bytes has been transmitted
+      // Check for zero insertion, stop after frame end or abort
       if(&PrevData[7:3] && uin_hdlc.Tx_ValidFrame && !uin_hdlc.Tx_AbortedTrans) begin
         @(posedge uin_hdlc.Clk);
         PrevData = PrevData >> 1;
@@ -316,10 +316,13 @@ program testPr_hdlc(
 
   endtask
 
-  task Transmit(int Size, int Abort, output logic [127:0][7:0] WrittenData, output logic [127:0][7:0] TransmittedData, output logic [15:0] FCSBytes);
+  task Transmit(int Size, int Abort, int Full, output logic [127:0][7:0] WrittenData, output logic [127:0][7:0] TransmittedData, output logic [15:0] FCSBytes);
+  logic [7:0]  ReadData;
   string msg;
   if(Abort)
     msg = "- Abort";
+  else if (Full)
+    msg = "- Full TxBuff";
   else
     msg = "- Normal";
   $display("*************************************************************");
@@ -338,6 +341,15 @@ program testPr_hdlc(
   for (int i = 0; i < Size; i++) begin
     @(posedge uin_hdlc.Clk);
     WriteAddress(`Tx_Buff, WrittenData[i]);
+  end
+
+  //Verify Tx_Full Asserted
+  if(Full) begin
+    ReadAddress(`Tx_SC, ReadData);
+    a_CorrectTxFCS: assert (ReadData == 8'h10) else begin
+      $display("ERROR: Tx_Full=%0h, not asserted after writing 126 bytes or more to TxBuff!", ReadData);
+      TbErrorCnt++;
+    end
   end
 
   //Start transmission and read Tx output
@@ -393,7 +405,7 @@ program testPr_hdlc(
         end
 
     // Verify content of Rx_Buff registers
-    for(int i=0; i<`RX_BUFF_SIZE; i++) begin
+    for(int i=0; i<`BUFF_SIZE; i++) begin
       ReadAddress(`Rx_Buff, ReadData);
       a_abort_RxBuff_content: assert (ReadData == 0) else begin
         $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after abort receive!", i, ReadData);
@@ -554,7 +566,7 @@ program testPr_hdlc(
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
+    Transmit( Size, 0, 0, WrittenData, TransmittedData, FCSBytes); //Normal
 
     wait(uin_hdlc.Tx_Done);
 
@@ -582,11 +594,33 @@ program testPr_hdlc(
     int Size;
     Size = 64;
 
-    Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
+    Transmit( Size, 1, 0, WrittenData, TransmittedData, FCSBytes); //Abort
 
   endtask
 
-  task VerifyFullTxBuff();
+  task VerifyFullTxBuffTransmit();
+    logic [127:0][7:0] WrittenData;
+    logic [127:0][7:0] TransmittedData;
+    logic [7:0]  ReadData;
+    logic [15:0] FCSBytes;
+    int Size;
+    Size = 126;
+
+    Transmit( Size, 0, 0, WrittenData, TransmittedData, FCSBytes); //Full TxBuff
+
+    // Verify Transmitted Data
+    for(int i = 0; i < Size; i++) begin
+      a_CorrectTxData: assert (TransmittedData[i] == WrittenData[i]) else begin
+        $display("ERROR: Tx_Byte[%0d]=%8b, not the correct TX byte value!", i, TransmittedData[i]);
+        TbErrorCnt++;
+      end
+    end
+
+    // Verify FCS Bytes
+    a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
+      $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
+      TbErrorCnt++;
+    end
 
   endtask
 
