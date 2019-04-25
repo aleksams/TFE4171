@@ -16,6 +16,7 @@ module assertions_hdlc (
   input logic Rx_AbortSignal,
   input logic Rx_EoF,
   input logic Rx_Ready,
+  input logic Rx_FrameError,
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
