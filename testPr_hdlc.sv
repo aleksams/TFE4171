@@ -440,10 +440,10 @@ program testPr_hdlc(
     // Verify content of Rx_SC register
     ReadAddress(`Rx_SC, ReadData);
     a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
-        else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
-          TbErrorCnt++;
-        end
+    else begin
+      $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
+      TbErrorCnt++;
+    end
 
     // Verify length of frame
     ReadAddress(`Rx_Len, ReadData);
@@ -478,10 +478,18 @@ program testPr_hdlc(
     // Verify content of Rx_SC register
     ReadAddress(`Rx_SC, ReadData);
     a_overflow_RXSC_content: assert (ReadData == 8'b00010001) $display ("PASS: VerifyOverflowReceiveRXSC, RX_SC=%8b", ReadData);
-        else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after overflow receive!", ReadData);
-          TbErrorCnt++;
-        end
+    else begin
+      $display("ERROR: RX_SC=%8b, not the correct value after overflow receive!", ReadData);
+      TbErrorCnt++;
+    end
+
+    // Verify length of frame
+    ReadAddress(`Rx_Len, ReadData);
+    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+    else begin
+      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+      TbErrorCnt++;
+    end
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
@@ -505,10 +513,18 @@ program testPr_hdlc(
     // Verify content of Rx_SC register
     ReadAddress(`Rx_SC, ReadData);
     a_FCSError_RXSC_content: assert (ReadData == 8'b00100100) $display ("PASS: VerifyFCSErrorReceiveRXSC, RX_SC=%8b", ReadData);
-        else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after FCS error receive!", ReadData);
-          TbErrorCnt++;
-        end
+    else begin
+      $display("ERROR: RX_SC=%8b, not the correct value after FCS error receive!", ReadData);
+      TbErrorCnt++;
+    end
+
+    // Verify length of frame
+    ReadAddress(`Rx_Len, ReadData);
+    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+    else begin
+      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+      TbErrorCnt++;
+    end
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
@@ -532,10 +548,18 @@ program testPr_hdlc(
     // Verify content of Rx_SC register
     ReadAddress(`Rx_SC, ReadData);
     a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00000100) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
-        else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after non-byte aligned frame receive!", ReadData);
-          TbErrorCnt++;
-        end
+    else begin
+      $display("ERROR: RX_SC=%8b, not the correct value after non-byte aligned frame receive!", ReadData);
+      TbErrorCnt++;
+    end
+
+    // Verify length of frame
+    ReadAddress(`Rx_Len, ReadData);
+    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+    else begin
+      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+      TbErrorCnt++;
+    end
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
@@ -559,10 +583,18 @@ program testPr_hdlc(
     // Verify content of Rx_SC register
     ReadAddress(`Rx_SC, ReadData);
     a_dropped_RXSC_content: assert (ReadData == 8'b00100000) $display ("PASS: VerifyDroppedFrameRXSC, RX_SC=%8b", ReadData);
-        else begin
-          $display("ERROR: RX_SC=%8b, not the correct value after Dropped frame receive!", ReadData);
-          TbErrorCnt++;
-        end
+    else begin
+      $display("ERROR: RX_SC=%8b, not the correct value after Dropped frame receive!", ReadData);
+      TbErrorCnt++;
+    end
+
+    // Verify length of frame
+    ReadAddress(`Rx_Len, ReadData);
+    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+    else begin
+      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+      TbErrorCnt++;
+    end
 
     // Verify content of Rx_Buff registers
     for(int i=0; i<Size; i++) begin
