@@ -609,7 +609,7 @@ program testPr_hdlc(
     int Size;
     Size = 126;
 
-    Transmit( Size, 0, 0, WrittenData, TransmittedData, FCSBytes); //Full TxBuff
+    Transmit( Size, 0, 1, WrittenData, TransmittedData, FCSBytes); //Full TxBuff
 
     // Verify Transmitted Data
     for(int i = 0; i < Size; i++) begin
