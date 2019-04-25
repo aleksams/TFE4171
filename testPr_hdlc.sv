@@ -9,7 +9,7 @@
 `define Rx_SC   3'h2
 `define Rx_Buff 3'h3
 `define Rx_Len  3'h4
-`define BUFF_SIZE 126
+`define BUFF_SIZE 128
 
 
 program testPr_hdlc(
@@ -344,7 +344,7 @@ program testPr_hdlc(
   end
 
   //Verify Tx_Full Asserted
-  if(Size >= `BUFF_SIZE) begin
+  if(Size >= `BUFF_SIZE-2) begin
     //Wait for signal propagation
     repeat(2)
       @(posedge uin_hdlc.Clk);
