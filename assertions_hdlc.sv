@@ -18,6 +18,7 @@ module assertions_hdlc (
   input logic Rx_Ready,
   input logic Rx_FrameError,
   input logic Rx_Drop,
+  input logic Rx_FrameSize,
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
@@ -146,7 +147,7 @@ module assertions_hdlc (
                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
   property RX_ReadReady;
-    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready throughout (Rx_ValidFrame || Rx_Drop) [->1];
+    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready [*(int'(Rx_FrameSize)+2)]; // or Rx_Ready throughout  Rx_Drop [->1];
   endproperty
 
   RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");

@@ -46,6 +46,7 @@ interface in_hdlc ();
   logic       Rx_EoF;
   logic       Rx_FrameError;
   logic       Rx_Drop;
+  logic       Rx_FrameSize;
 
 
 endinterface
