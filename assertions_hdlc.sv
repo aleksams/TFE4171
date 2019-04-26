@@ -67,7 +67,7 @@ module assertions_hdlc (
 
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
                                   else begin $display("ERROR(%0t): Flag sequence did not generate FlagDetect",$time); ErrCntAssertions++; end
-
+/*
   property Generate_StartofFrame_Flag;
     @(posedge Clk) $rose(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##2 Tx_Flag;
   endproperty
@@ -83,7 +83,7 @@ module assertions_hdlc (
   Generate_EndofFrame_Flag_Assert    :  assert property (Generate_EndofFrame_Flag) $display("PASS: Generate_EndofFrame_Flag_flag");
                                         else begin $display("ERROR(%0t): Did not correctly generate EndofFrame_flag",$time); ErrCntAssertions++; end
 
-
+*/
   //Check if receiving idle pattern
   //What signals are set when in idle? !ValidFrame
   //Rx
@@ -97,7 +97,8 @@ module assertions_hdlc (
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
   property Generate_IdlePattern;
-    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_Flag ##1 (Tx throughout Tx_ValidFrame [->1]);
+    //@(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_Flag ##1 (Tx throughout Tx_ValidFrame [->1]);
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 (Tx throughout Tx_ValidFrame [->1]);
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
