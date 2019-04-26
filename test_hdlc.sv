@@ -17,6 +17,7 @@ module test_hdlc ();
   assign uin_hdlc.Rx_EoF             = u_dut.Rx_EoF;
   assign uin_hdlc.Rx_Ready           = u_dut.Rx_Ready;
   assign uin_hdlc.Rx_FrameError      = u_dut.Rx_FrameError;
+  assign uin_hdlc.Rx_Drop            = u_dut.Rx_Drop;
 
   //TX - Internal assignments
   assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;

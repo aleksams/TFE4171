@@ -17,6 +17,7 @@ module assertions_hdlc (
   input logic Rx_EoF,
   input logic Rx_Ready,
   input logic Rx_FrameError,
+  input logic Rx_Drop,
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
@@ -96,6 +97,7 @@ module assertions_hdlc (
 
   //Check if idle pattern is generated
   //What signals are set when in idle? Tx
+//Will cause an error due to Tx_ValidFrame not being high while end of frame flag is being transmitted.
   property Generate_IdlePattern;
     //@(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 Tx_Flag ##1 (Tx throughout Tx_ValidFrame [->1]);
     @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 (Tx throughout Tx_ValidFrame [->1]);
@@ -144,7 +146,7 @@ module assertions_hdlc (
                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
   property RX_ReadReady;
-    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##1 Rx_Ready;
+    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready throughout (Rx_AbortSignal[->1] || Rx_FrameError[->1] || Rx_ValidFrame[->1] || Rx_Drop[->1]);
   endproperty
 
   RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
