@@ -11,6 +11,25 @@
 `define Rx_Len  3'h4
 `define BUFF_SIZE 128
 
+`define TEST_NUM 20
+
+/*//Covergroup
+covergroup alu_cg @(posedge clk);
+     coverpoint `sig_xor;
+     coverpoint `a {
+        bins zero     = { 0 };
+        bins low      = { [1:50] };
+        bins hunds[]  = { 100,200 };
+        bins high     = { [200:$] };
+        bins others[] = default;
+     }
+     coverpoint `c;
+     cross `a, `b;
+endgroup
+
+   alu_cg cg_inst = new;*/
+
+
 
 program testPr_hdlc(
   in_hdlc uin_hdlc
@@ -41,8 +60,6 @@ program testPr_hdlc(
     VerifyNormalTransmit();
     #5000ns;
     VerifyAbortTransmit();
-    #5000ns;
-    VerifyFullTxBuffTransmit();
     #5000ns;
 
     $display("*************************************************************");
@@ -190,7 +207,7 @@ program testPr_hdlc(
     else
       msg = "- Normal";
     $display("*************************************************************");
-    $display("%t - Starting task Receive %s", $time, msg);
+    $display("%t - Starting task Receive %s, Size=%0d", $time, msg, Size);
     $display("*************************************************************");
 
     for (int i = 0; i < Size; i++) begin
@@ -253,13 +270,13 @@ program testPr_hdlc(
   
   task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
     logic [7:0] Flag, AbortFlag, DataByte, PrevData;
-    int i, j, AbortTime;
+    int TxBits, TxBytes, AbortTime;
     Flag = 8'b01111110;
     AbortFlag = 8'b11111110;
     PrevData = '0;
     DataByte = '0;
-    i = 0;
-    j = 0;
+    TxBits = 0;
+    TxBytes = 0;
     if(Abort) begin
       AbortTime = ($urandom % (Size-1))+1;
     end else begin
@@ -303,15 +320,15 @@ program testPr_hdlc(
         end
       end
 
-      i++;
+      TxBits++;
       // Save data byte
-      if(i%8 == 0) begin
-        ReadData[j] = DataByte;
-        j++;
+      if(TxBits % 8 == 0) begin
+        ReadData[TxBytes] = DataByte;
+        TxBytes++;
       end
 
-      // Insert Abort signal
-      if(j == AbortTime && i%8 == 0) begin
+      // Insert Abort signal at a random time point 
+      if(TxBytes == AbortTime && TxBits % 8 == 0) begin
         WriteAddress(`Tx_SC, 8'h04);
       end
     end
@@ -326,7 +343,7 @@ program testPr_hdlc(
   else
     msg = "- Normal";
   $display("*************************************************************");
-  $display("%t - Starting task Transmit %s", $time, msg);
+  $display("%t - Starting task Transmit %s, Size=%0d", $time, msg, Size);
   $display("*************************************************************");
 
   for (int i = 0; i < Size; i++) begin
@@ -413,31 +430,39 @@ program testPr_hdlc(
     logic [127:0][7:0] data;
     logic [7:0] ReadData;
     int Size;
-    Size = 40;
 
-    Receive( Size, 1, 0, 0, 0, 0, 0, data); //Abort
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        SIze = 0;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
 
-    ReadAddress(`Rx_SC, ReadData);
-    a_abort_RXSC_content: assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, Rx_SC=%8b", ReadData);
-    else begin
-      $display("ERROR: RX_SC=%8b, not the correct value after abort receive!", ReadData);
-      TbErrorCnt++;
-    end
+      Receive( Size, 1, 0, 0, 0, 0, 0, data); //Abort
 
-    // Verify length of frame
-    ReadAddress(`Rx_Len, ReadData);
-    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
-    else begin
-      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
-      TbErrorCnt++;
-    end
-
-    // Verify content of Rx_Buff registers
-    for(int i=0; i<`BUFF_SIZE; i++) begin
-      ReadAddress(`Rx_Buff, ReadData);
-      a_abort_RxBuff_content: assert (ReadData == 0) else begin
-        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after abort receive!", i, ReadData);
+      ReadAddress(`Rx_SC, ReadData);
+      a_abort_RXSC_content: assert (ReadData == 8'b00101000) $display ("PASS: VerifyAbortReceiveRXSC, Rx_SC=%8b", ReadData);
+      else begin
+        $display("ERROR: RX_SC=%8b, not the correct value after abort receive!", ReadData);
         TbErrorCnt++;
+      end
+
+      // Verify length of frame
+      ReadAddress(`Rx_Len, ReadData);
+      a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+      else begin
+        $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+        TbErrorCnt++;
+      end
+
+      // Verify content of Rx_Buff registers
+      for(int i=0; i<`BUFF_SIZE; i++) begin
+        ReadAddress(`Rx_Buff, ReadData);
+        a_abort_RxBuff_content: assert (ReadData == 0) else begin
+          $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after abort receive!", i, ReadData);
+          TbErrorCnt++;
+        end
       end
     end
 
@@ -448,34 +473,42 @@ program testPr_hdlc(
     logic [127:0][7:0] data;
     logic [7:0]  ReadData;
     int Size;
-    Size = 10;
 
-    Receive( Size, 0, 0, 0, 0, 0, 0, data); //Normal
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        SIze = 0;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
 
-    wait(uin_hdlc.Rx_Ready);
+      Receive( Size, 0, 0, 0, 0, 0, 0, data); //Normal
 
-    // Verify content of Rx_SC register
-    ReadAddress(`Rx_SC, ReadData);
-    a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
-    else begin
-      $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
-      TbErrorCnt++;
-    end
+      wait(uin_hdlc.Rx_Ready);
 
-    // Verify length of frame
-    ReadAddress(`Rx_Len, ReadData);
-    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
-    else begin
-      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
-      TbErrorCnt++;
-    end
-
-    // Verify content of RxBuff registers
-    for(int i=0; i<Size; i++) begin
-      ReadAddress(`Rx_Buff, ReadData);
-      a_normal_RxBuff_content: assert (ReadData == data[i]) else begin
-        $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
+      // Verify content of Rx_SC register
+      ReadAddress(`Rx_SC, ReadData);
+      a_normal_RXSC_content: assert (ReadData == 8'b00100001) $display ("PASS: VerifyNormalReceiveRXSC, RX_SC=%8b", ReadData);
+      else begin
+        $display("ERROR: RX_SC=%8b, not the correct value after normal receive!", ReadData);
         TbErrorCnt++;
+      end
+
+      // Verify length of frame
+      ReadAddress(`Rx_Len, ReadData);
+      a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+      else begin
+        $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+        TbErrorCnt++;
+      end
+
+      // Verify content of RxBuff registers
+      for(int i=0; i<Size; i++) begin
+        ReadAddress(`Rx_Buff, ReadData);
+        a_normal_RxBuff_content: assert (ReadData == data[i]) else begin
+          $display("ERROR: RX_BUFF[%0d]=%8b, not the correct value after normal receive!", i, ReadData);
+          TbErrorCnt++;
+        end
       end
     end
 
@@ -613,7 +646,6 @@ program testPr_hdlc(
   task VerifyNormalTransmit();
     logic [127:0][7:0] WrittenData;
     logic [127:0][7:0] TransmittedData;
-    logic [7:0]  ReadData;
     logic [15:0] FCSBytes;
     int Size;
     Size = 126;
@@ -641,38 +673,11 @@ program testPr_hdlc(
   task VerifyAbortTransmit();
     logic [127:0][7:0] WrittenData;
     logic [127:0][7:0] TransmittedData;
-    logic [7:0]  ReadData;
     logic [15:0] FCSBytes;
     int Size;
     Size = 64;
 
     Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
-
-  endtask
-
-  task VerifyFullTxBuffTransmit();
-    logic [127:0][7:0] WrittenData;
-    logic [127:0][7:0] TransmittedData;
-    logic [7:0]  ReadData;
-    logic [15:0] FCSBytes;
-    int Size;
-    Size = 126;
-
-    Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
-
-    // Verify Transmitted Data
-    for(int i = 0; i < Size; i++) begin
-      a_CorrectTxData: assert (TransmittedData[i] == WrittenData[i]) else begin
-        $display("ERROR: Tx_Byte[%0d]=%8b, not the correct TX byte value!", i, TransmittedData[i]);
-        TbErrorCnt++;
-      end
-    end
-
-    // Verify FCS Bytes
-    a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
-      $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
-      TbErrorCnt++;
-    end
 
   endtask
 
