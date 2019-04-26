@@ -19,6 +19,7 @@ module bind_hdlc ();
     .Rx_Ready(uin_hdlc.Rx_Ready),
     .Rx_FrameError(uin_hdlc.Rx_FrameError),
     .Rx_Drop(uin_hdlc.Rx_Drop),
+    .Rx_FrameSize(uin_hdlc.Rx_FrameSize),
     .Tx(uin_hdlc.Tx),
     .Tx_ValidFrame(uin_hdlc.Tx_ValidFrame),
     .Tx_AbortFrame(uin_hdlc.Tx_AbortFrame),
