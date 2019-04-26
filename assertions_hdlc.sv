@@ -146,14 +146,14 @@ module assertions_hdlc (
                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
   property RX_ReadReady;
-    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready throughout (Rx_AbortSignal[->1] || Rx_FrameError[->1] || Rx_ValidFrame[->1] || Rx_Drop[->1]);
+    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready throughout (Rx_ValidFrame[->1] || Rx_Drop[->1]);
   endproperty
 
   RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
                                    else begin $display("ERROR(%0t): Rx_Ready did not go high when Frame was finished.",$time); ErrCntAssertions++; end
   //Add when Rx Buffer is not ready to be read, abort_signal or frame error is asserted.
   property RX_ReadNotReady;
-    @(posedge Clk) Rx_AbortSignal || Rx_FrameError |-> ##1 !Rx_Ready;
+    @(posedge Clk) Rx_EoF and (Rx_AbortSignal || Rx_FrameError) |-> ##0 !Rx_Ready throughout (Rx_ValidFrame[->1]);
   endproperty
 
   RX_ReadNotReady_Assert            : assert property (RX_ReadNotReady)//$display("PASS: RX_ReadNotReady");
