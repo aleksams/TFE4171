@@ -58,8 +58,9 @@ module assertions_hdlc (
     !Tx ##1 Tx [*7];
   endsequence
 
-  sequence Rx_Framsizelength;
-    Rx_Ready [*int'(Rx_FrameSize)+2];
+  sequence Rx_Framsizelength(Rx_FrameSize);
+    int Rx_FrameSizeTest = Rx_FrameSize;
+    Rx_Ready [*Rx_FrameSizeTest+2];
   endsequence
 
 /////////////////////////////////////////////////////////////////
