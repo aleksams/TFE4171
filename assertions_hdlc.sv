@@ -18,7 +18,7 @@ module assertions_hdlc (
   input logic Rx_Ready,
   input logic Rx_FrameError,
   input logic Rx_Drop,
-  input logic Rx_FrameSize,
+  input logic [7:0] Rx_FrameSize,
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
