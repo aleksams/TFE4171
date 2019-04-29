@@ -59,7 +59,7 @@ module assertions_hdlc (
   endsequence
 
   sequence Rx_Framsizelength;
-    Rx_Ready [*Rx_FrameSize+2];
+    Rx_Ready [*int'(Rx_FrameSize)+2];
   endsequence
 
 /////////////////////////////////////////////////////////////////
