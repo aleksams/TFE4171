@@ -433,7 +433,7 @@ program testPr_hdlc(
 
     for(int i = 0; i < `TEST_NUM; i++) begin
       if(i==0)
-        SIze = 0;
+        Size = 1;
       else if(i==1)
         Size = 126;
       else
@@ -476,7 +476,7 @@ program testPr_hdlc(
 
     for(int i = 0; i < `TEST_NUM; i++) begin
       if(i==0)
-        SIze = 0;
+        Size = 1;
       else if(i==1)
         Size = 126;
       else
@@ -556,24 +556,32 @@ program testPr_hdlc(
     logic [127:0][7:0] data;
     logic [7:0] ReadData;
     int Size;
-    Size = 30;
 
-    Receive( Size, 0, 1, 0, 0, 0, 0, data); //FCS Error
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        Size = 1;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
 
-    // Verify content of Rx_SC register
-    ReadAddress(`Rx_SC, ReadData);
-    a_FCSError_RXSC_content: assert (ReadData == 8'b00100100) $display ("PASS: VerifyFCSErrorReceiveRXSC, RX_SC=%8b", ReadData);
-    else begin
-      $display("ERROR: RX_SC=%8b, not the correct value after FCS error receive!", ReadData);
-      TbErrorCnt++;
-    end
+      Receive( Size, 0, 1, 0, 0, 0, 0, data); //FCS Error
 
-    // Verify content of Rx_Buff registers
-    for(int i=0; i<Size; i++) begin
-      ReadAddress(`Rx_Buff, ReadData);
-      a_FCSError_RxBuff_content: assert (ReadData == 0) else begin
-        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after FCS error receive!", i, ReadData);
+      // Verify content of Rx_SC register
+      ReadAddress(`Rx_SC, ReadData);
+      a_FCSError_RXSC_content: assert (ReadData == 8'b00100100) $display ("PASS: VerifyFCSErrorReceiveRXSC, RX_SC=%8b", ReadData);
+      else begin
+        $display("ERROR: RX_SC=%8b, not the correct value after FCS error receive!", ReadData);
         TbErrorCnt++;
+      end
+
+      // Verify content of Rx_Buff registers
+      for(int i=0; i<Size; i++) begin
+        ReadAddress(`Rx_Buff, ReadData);
+        a_FCSError_RxBuff_content: assert (ReadData == 0) else begin
+          $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after FCS error receive!", i, ReadData);
+          TbErrorCnt++;
+        end
       end
     end
 
@@ -583,24 +591,32 @@ program testPr_hdlc(
     logic [127:0][7:0] data;
     logic [7:0] ReadData;
     int Size;
-    Size = 2;
 
-    Receive( Size, 0, 0, 1, 0, 0, 0, data); //NonByteAligned
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        Size = 1;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
 
-    // Verify content of Rx_SC register
-    ReadAddress(`Rx_SC, ReadData);
-    a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00000100) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
-    else begin
-      $display("ERROR: RX_SC=%8b, not the correct value after non-byte aligned frame receive!", ReadData);
-      TbErrorCnt++;
-    end
+      Receive( Size, 0, 0, 1, 0, 0, 0, data); //NonByteAligned
 
-    // Verify content of Rx_Buff registers
-    for(int i=0; i<Size; i++) begin
-      ReadAddress(`Rx_Buff, ReadData);
-      a_NonByteAligned_RxBuff_content: assert (ReadData == 0) else begin
-        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after non-byte aligned frame receive!", i, ReadData);
+      // Verify content of Rx_SC register
+      ReadAddress(`Rx_SC, ReadData);
+      a_NonByteAligned_RXSC_content: assert (ReadData == 8'b00000100) $display ("PASS: VerifyNonByteAlignedRXSC, RX_SC=%8b", ReadData);
+      else begin
+        $display("ERROR: RX_SC=%8b, not the correct value after non-byte aligned frame receive!", ReadData);
         TbErrorCnt++;
+      end
+
+      // Verify content of Rx_Buff registers
+      for(int i=0; i<Size; i++) begin
+        ReadAddress(`Rx_Buff, ReadData);
+        a_NonByteAligned_RxBuff_content: assert (ReadData == 0) else begin
+          $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after non-byte aligned frame receive!", i, ReadData);
+          TbErrorCnt++;
+        end
       end
     end
 
@@ -610,32 +626,40 @@ program testPr_hdlc(
     logic [127:0][7:0] data;
     logic [7:0] ReadData;
     int Size;
-    Size = 50;
 
-    Receive( Size, 0, 0, 0, 0, 1, 0, data); //Dropped Frame
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        Size = 1;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
 
-    // Verify content of Rx_SC register
-    ReadAddress(`Rx_SC, ReadData);
-    a_dropped_RXSC_content: assert (ReadData == 8'b00100000) $display ("PASS: VerifyDroppedFrameRXSC, RX_SC=%8b", ReadData);
-    else begin
-      $display("ERROR: RX_SC=%8b, not the correct value after Dropped frame receive!", ReadData);
-      TbErrorCnt++;
-    end
+      Receive( Size, 0, 0, 0, 0, 1, 0, data); //Dropped Frame
 
-    // Verify length of frame
-    ReadAddress(`Rx_Len, ReadData);
-    a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
-    else begin
-      $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
-      TbErrorCnt++;
-    end
-
-    // Verify content of Rx_Buff registers
-    for(int i=0; i<Size; i++) begin
-      ReadAddress(`Rx_Buff, ReadData);
-      a_dropped_RxBuff_content: assert (ReadData == 0) else begin
-        $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after Dropped frame receive!", i, ReadData);
+      // Verify content of Rx_SC register
+      ReadAddress(`Rx_SC, ReadData);
+      a_dropped_RXSC_content: assert (ReadData == 8'b00100000) $display ("PASS: VerifyDroppedFrameRXSC, RX_SC=%8b", ReadData);
+      else begin
+        $display("ERROR: RX_SC=%8b, not the correct value after Dropped frame receive!", ReadData);
         TbErrorCnt++;
+      end
+
+      // Verify length of frame
+      ReadAddress(`Rx_Len, ReadData);
+      a_RxLen_equal_Size: assert (ReadData == Size) $display ("PASS: a_RxLen_equal_Size, Rx_Len=%0d", ReadData);
+      else begin
+        $display("ERROR: Rx_Len=%0d, not the correct received frame size!", ReadData);
+        TbErrorCnt++;
+      end
+
+      // Verify content of Rx_Buff registers
+      for(int i=0; i<Size; i++) begin
+        ReadAddress(`Rx_Buff, ReadData);
+        a_dropped_RxBuff_content: assert (ReadData == 0) else begin
+          $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after Dropped frame receive!", i, ReadData);
+          TbErrorCnt++;
+        end
       end
     end
 
@@ -648,24 +672,32 @@ program testPr_hdlc(
     logic [127:0][7:0] TransmittedData;
     logic [15:0] FCSBytes;
     int Size;
-    Size = 126;
 
-    Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        Size = 1;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
 
-    wait(uin_hdlc.Tx_Done);
+      Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
 
-    // Verify Transmitted Data
-    for(int i = 0; i < Size; i++) begin
-      a_CorrectTxData: assert (TransmittedData[i] == WrittenData[i]) else begin
-        $display("ERROR: Tx_Byte[%0d]=%8b, not the correct TX byte value!", i, TransmittedData[i]);
+      wait(uin_hdlc.Tx_Done);
+
+      // Verify Transmitted Data
+      for(int i = 0; i < Size; i++) begin
+        a_CorrectTxData: assert (TransmittedData[i] == WrittenData[i]) else begin
+          $display("ERROR: Tx_Byte[%0d]=%8b, not the correct TX byte value!", i, TransmittedData[i]);
+          TbErrorCnt++;
+        end
+      end
+
+      // Verify FCS Bytes
+      a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
+        $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
         TbErrorCnt++;
       end
-    end
-
-    // Verify FCS Bytes
-    a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
-      $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
-      TbErrorCnt++;
     end
 
   endtask
@@ -675,9 +707,18 @@ program testPr_hdlc(
     logic [127:0][7:0] TransmittedData;
     logic [15:0] FCSBytes;
     int Size;
-    Size = 64;
 
-    Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
+    for(int i = 0; i < `TEST_NUM; i++) begin
+      if(i==0)
+        Size = 1;
+      else if(i==1)
+        Size = 126;
+      else
+        Size = ($urandom % 125) + 1;
+
+      Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
+
+    end
 
   endtask
 
