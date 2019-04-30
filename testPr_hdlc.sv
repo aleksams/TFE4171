@@ -14,7 +14,7 @@
 `define TEST_NUM 20
 
 //Covergroup
-covergroup hdlc_rx_cg @(posedge uin_hdlc.Clk);
+covergroup hdlc_rx_cg () @(posedge uin_hdlc.Clk);
   Rx_FrameSize: coverpoint uin_hdlc.Rx_FrameSize {
     bins FrameSizes_Valid   = {[0:126]};
     bins FrameSizes_Invalid = default;
@@ -266,7 +266,7 @@ program testPr_hdlc(
 
   endtask
 
-  
+
   task ReadTransmittedData(int Size, int Abort, output logic [127:0][7:0] ReadData);
     logic [7:0] Flag, AbortFlag, DataByte, PrevData;
     int TxBits, TxBytes, AbortTime;
@@ -326,7 +326,7 @@ program testPr_hdlc(
         TxBytes++;
       end
 
-      // Insert Abort signal at a random time point 
+      // Insert Abort signal at a random time point
       if(TxBytes == AbortTime && TxBits % 8 == 0) begin
         WriteAddress(`Tx_SC, 8'h04);
       end
