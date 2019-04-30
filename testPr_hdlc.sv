@@ -13,21 +13,20 @@
 
 `define TEST_NUM 20
 
-/*//Covergroup
-covergroup alu_cg @(posedge clk);
-     coverpoint `sig_xor;
-     coverpoint `a {
-        bins zero     = { 0 };
-        bins low      = { [1:50] };
-        bins hunds[]  = { 100,200 };
-        bins high     = { [200:$] };
-        bins others[] = default;
-     }
-     coverpoint `c;
-     cross `a, `b;
+//Covergroup
+covergroup hdlc_rx_cg @(posedge uin_hdlc.Clk);
+  Rx_FrameSize: coverpoint uin_hdlc.Rx_FrameSize {
+    bins FrameSizes_Valid   = {[0:126]};
+    bins FrameSizes_Invalid = default;
+  }
+  Tx_FrameSize: coverpoint uin_hdlc.Tx_FrameSize {
+    bins FrameSizes_Valid   = {[0:126]};
+    bins FrameSizes_Invalid
+     = default;
+  }
 endgroup
 
-   alu_cg cg_inst = new;*/
+  hdlc_rx_cg cg_inst = new;
 
 
 
