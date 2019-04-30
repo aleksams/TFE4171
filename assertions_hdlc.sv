@@ -151,18 +151,10 @@ module assertions_hdlc (
   RX_EndofFrame_Assert            : assert property (RX_EndofFrame)$display("PASS: RX_EndofFrame");
                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
-//  property RX_ReadReady;
-//    int test;
-//    @(posedge Clk) disable iff(!Rst) (Rx_EoF and !Rx_AbortSignal and !Rx_FrameError,test = Rx_FrameSize) |->  Rx_Ready[*test]; // or Rx_Ready throughout  Rx_Drop [->1];
-//  endproperty
+  property RX_ReadReady;
+    @(posedge Clk) disable iff(!Rst) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready;
+  endproperty
 
-//  RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
-//                                   else begin $display("ERROR(%0t): Rx_Ready did not go high when Frame was finished.",$time); ErrCntAssertions++; end
-  //Add when Rx Buffer is not ready to be read, abort_signal or frame error is asserted.
-//  property RX_ReadNotReady;
-//    @(posedge Clk) disable iff(!Rst) Rx_EoF and (Rx_AbortSignal || Rx_FrameError) |-> ##0 !Rx_Ready throughout (Rx_ValidFrame[->1]);
-//  endproperty
-
-//  RX_ReadNotReady_Assert            : assert property (RX_ReadNotReady)//$display("PASS: RX_ReadNotReady");
-//                                    else begin $display("ERROR(%0t): Rx_Ready did not go low when Frame was aborted or had errors.",$time); ErrCntAssertions++; end
+  RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
+                                   else begin $display("ERROR(%0t): Rx_Ready did not go high when Frame was finished.",$time); ErrCntAssertions++; end
 endmodule
