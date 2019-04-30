@@ -87,6 +87,7 @@ module assertions_hdlc (
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
 //else begin $display("ERROR(%0t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++;
+;
  end
 
   property Receive_AbortPattern;
