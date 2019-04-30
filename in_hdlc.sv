@@ -51,6 +51,7 @@ interface in_hdlc ();
   logic [7:0] Rx_FrameSize;
   logic [7:0] Rx_TempReg;
   logic       Rx_FCSen;
+  logic       Rx_Overflow;
 
 
 endinterface
