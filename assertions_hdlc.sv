@@ -85,10 +85,8 @@ module assertions_hdlc (
     @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 (Tx throughout Tx_ValidFrame [->1]);
   endproperty
 
-  Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) //$display("PASS: Generate_IdlePattern");
-//else begin $display("ERROR(%0t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++;
-;
- end
+  Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern); //$display("PASS: Generate_IdlePattern");
+//else begin $display("ERROR(%0t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++;ennd
 
   property Receive_AbortPattern;
     @(posedge Clk) disable iff(!Rst) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##2 $rose(Rx_AbortDetect);
