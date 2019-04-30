@@ -82,7 +82,7 @@ module assertions_hdlc (
                                    else begin $display("ERROR(%0t): Rx input did not correctly generate idle pattern",$time); ErrCntAssertions++; end
 
   property Generate_IdlePattern;
-    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) and !Tx_AbortedTrans |-> ##1 (Tx throughout Tx_ValidFrame [->1]);
+    @(posedge Clk) disable iff(!Rst) $fell(Tx_ValidFrame) /*and !Tx_AbortedTrans*/ |-> ##1 (Tx throughout Tx_ValidFrame [->1]);
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) $display("PASS: Generate_IdlePattern");
