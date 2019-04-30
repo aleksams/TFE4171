@@ -432,7 +432,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Receive( Size, 1, 0, 0, 0, 0, 0, data); //Abort
 
@@ -475,7 +475,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Receive( Size, 0, 0, 0, 0, 0, 0, data); //Normal
 
@@ -558,7 +558,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Receive( Size, 0, 1, 0, 0, 0, 0, data); //FCS Error
 
@@ -571,7 +571,7 @@ program testPr_hdlc(
       end
 
       // Verify content of Rx_Buff registers
-      for(int i=0; i<Size; i++) begin
+      for(int i=0; i<`BUFF_SIZE; i++) begin
         ReadAddress(`Rx_Buff, ReadData);
         a_FCSError_RxBuff_content: assert (ReadData == 0) else begin
           $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after FCS error receive!", i, ReadData);
@@ -593,7 +593,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Receive( Size, 0, 0, 1, 0, 0, 0, data); //NonByteAligned
 
@@ -606,7 +606,7 @@ program testPr_hdlc(
       end
 
       // Verify content of Rx_Buff registers
-      for(int i=0; i<Size; i++) begin
+      for(int i=0; i<`BUFF_SIZE; i++) begin
         ReadAddress(`Rx_Buff, ReadData);
         a_NonByteAligned_RxBuff_content: assert (ReadData == 0) else begin
           $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after non-byte aligned frame receive!", i, ReadData);
@@ -628,7 +628,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Receive( Size, 0, 0, 0, 0, 1, 0, data); //Dropped Frame
 
@@ -649,7 +649,7 @@ program testPr_hdlc(
       end
 
       // Verify content of Rx_Buff registers
-      for(int i=0; i<Size; i++) begin
+      for(int i=0; i<`BUFF_SIZE; i++) begin
         ReadAddress(`Rx_Buff, ReadData);
         a_dropped_RxBuff_content: assert (ReadData == 0) else begin
           $display("ERROR: RX_BUFF[%0d]=%0b, not the correct value after Dropped frame receive!", i, ReadData);
@@ -674,7 +674,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Transmit( Size, 0, WrittenData, TransmittedData, FCSBytes); //Normal
 
@@ -690,7 +690,7 @@ program testPr_hdlc(
 
       // Verify FCS Bytes
       a_CorrectTxFCS: assert ({TransmittedData[Size+1], TransmittedData[Size]} == FCSBytes) else begin
-        $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size], TransmittedData[Size+1]}, FCSBytes);
+        $display("ERROR: Tx_FCS_Bytes=%0h, not the correct FCS value: %0h!", {TransmittedData[Size+1], TransmittedData[Size]}, FCSBytes);
         TbErrorCnt++;
       end
     end
@@ -709,7 +709,7 @@ program testPr_hdlc(
       else if(i==1)
         Size = 126;
       else
-        Size = ($urandom % 125) + 1;
+        Size = ($urandom % 126) + 1;
 
       Transmit( Size, 1, WrittenData, TransmittedData, FCSBytes); //Abort
 
