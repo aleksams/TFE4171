@@ -46,15 +46,39 @@ module test_hdlc ();
       bins Idle         = { 255 };
       bins Others       = default;
     }
+    Rx_Ready: coverpoint uin_hdlc.Rx_Ready {
+      bins Ready    = { 1 };
+      bins NotReady = { 0 };
+    }
+    Rx_Drop: coverpoint uin_hdlc.Rx_Drop {
+      bins Dropped    = { 1 };
+      bins NotDropped = { 0 };
+    }
+    Rx_FrameError: coverpoint uin_hdlc.Rx_FrameError {
+      bins FrameError   = { 1 };
+      bins NoFrameError = { 0 };
+    }
+    Rx_Abort: coverpoint uin_hdlc.Rx_AbortSignal {
+      bins Abort   = { 1 };
+      bins NoAbort = { 0 };
+    }
+    Rx_Overflow: coverpoint uin_hdlc.Rx_Overflow {
+      bins Overflow   = { 1 };
+      bins NoOverflow = { 0 };
+    }
+    Rx_FCSen: coverpoint uin_hdlc.Rx_FCSen {
+      bins FCSenabled  = { 1 };
+      bins FCSdisabled = { 0 };
+    }
   endgroup
-  
+
   /*covergroup hdlc_tx_cg () @(posedge uin_hdlc.Clk);
     Tx_FrameSize: coverpoint uin_hdlc.Tx_FrameSize {
       bins FrameSizes_Valid   = {[0:126]};
       bins FrameSizes_Invalid = default;
     }
   endgroup*/
-  
+
   hdlc_rx_cg cg_inst = new;
 
   //Dut
