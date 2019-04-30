@@ -58,16 +58,12 @@ module assertions_hdlc (
     !Tx ##1 Tx [*7];
   endsequence
 
-  //sequence Rx_Framsizelength(Rx_FrameSize);
-  //  int Rx_FrameSizeTest = Rx_FrameSize;
-  //  Rx_Ready [*Rx_FrameSizeTest];
-//endsequence
 
 /////////////////////////////////////////////////////////////////
 ////////                    ASSERTIONS                 /////////
 ////////////////////////////////////////////////////////////////
 
-  // Check if flag sequence is detected
+
   property Receive_FlagDetect;
     @(posedge Clk) disable iff(!Rst) Rx_Flag |-> ##2 Rx_FlagDetect;
   endproperty
@@ -86,7 +82,7 @@ module assertions_hdlc (
   endproperty
 
   Generate_IdlePattern_Assert    :  assert property (Generate_IdlePattern) $display("PASS: Generate_IdlePattern");
-                                  else begin $display("ERROR(%0t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
+                                    else begin $display("ERROR(%0t): Tx did not generate Tx_IdlePattern",$time); ErrCntAssertions++; end
 
   property Receive_AbortPattern;
     @(posedge Clk) disable iff(!Rst) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##2 $rose(Rx_AbortDetect);
@@ -130,5 +126,5 @@ module assertions_hdlc (
   endproperty
 
   RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
-else begin $display("ERROR(%0t): RxBuff was not ready to be read when Rx_Ready was asserted.",$time); ErrCntAssertions++; end
+                                   else begin $display("ERROR(%0t): RxBuff was not ready to be read when Rx_Ready was asserted.",$time); ErrCntAssertions++; end
 endmodule
