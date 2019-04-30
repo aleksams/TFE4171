@@ -75,7 +75,7 @@ module assertions_hdlc (
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
                                   else begin $display("ERROR(%0t): Flag sequence did not generate FlagDetect",$time); ErrCntAssertions++; end
   property Receive_IdlePattern;
-    @(posedge Clk) disable iff(Rx_AbortDetect || !Rst) Rx_IdlePattern |-> ##1 Rx_ValidFrame;
+    @(posedge Clk) disable iff(Rx_AbortDetect || !Rst) Rx_IdlePattern |-> ##1 !Rx_ValidFrame;
   endproperty
 
   Receive_IdlePattern_Assert    :  assert property (Receive_IdlePattern) $display("PASS: Receive_IdlePattern");
