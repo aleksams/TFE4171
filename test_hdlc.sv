@@ -74,14 +74,42 @@ module test_hdlc ();
     }
   endgroup
 
-  /*covergroup hdlc_tx_cg () @(posedge uin_hdlc.Clk);
+  covergroup hdlc_tx_cg () @(posedge uin_hdlc.Clk);
     Tx_FrameSize: coverpoint uin_hdlc.Tx_FrameSize {
       bins FrameSizes_Valid   = {[0:126]};
       bins FrameSizes_Invalid = default;
     }
-  endgroup*/
+    Tx_Byte: coverpoint uin_hdlc.Rx_TempReg {
+      bins FrameFlag    = { 126 };
+      bins AbortPattern = { 127 };
+      bins Idle         = { 255 };
+      bins Others       = default;
+    }
+    Tx_Done: coverpoint uin_hdlc.Tx_Done {
+      bins Done    = { 1 };
+      bins NotDone = { 0 };
+    }
+    Tx_Enable: coverpoint uin_hdlc.TxEN {
+      bins Enabled    = { 1 };
+      bins NotEnabled = { 0 };
+    }
+    Tx_AbortFrame: coverpoint uin_hdlc.Tx_AbortFrame {
+      bins Abort     = { 1 };
+      bins DontAbort = { 0 };
+    }
+    Tx_AbortedTrans: coverpoint uin_hdlc.Tx_AbortedTrans {
+      bins Aborted    = { 1 };
+      bins NotAborted = { 0 };
+    }
+    Tx_Full: coverpoint uin_hdlc.Tx_Full {
+      bins Full    = { 1 };
+      bins NotFull = { 0 };
+    }
+  endgroup
 
-  hdlc_rx_cg cg_inst = new;
+  hdlc_rx_cg rx_cg_inst = new;
+
+  hdlc_tx_cg tx_cg_inst = new;
 
   //Dut
   Hdlc u_dut(
