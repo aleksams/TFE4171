@@ -18,7 +18,7 @@ module assertions_hdlc (
   input logic Rx_Ready,
   input logic Rx_FrameError,
   input logic Rx_Drop,
-  input logic Rx_FrameSize,
+  input logic [7:0] Rx_FrameSize,
   //Tx - signals
   input logic Tx,
   input logic Tx_ValidFrame,
@@ -58,13 +58,18 @@ module assertions_hdlc (
     !Tx ##1 Tx [*7];
   endsequence
 
+  //sequence Rx_Framsizelength(Rx_FrameSize);
+  //  int Rx_FrameSizeTest = Rx_FrameSize;
+  //  Rx_Ready [*Rx_FrameSizeTest];
+//endsequence
+
 /////////////////////////////////////////////////////////////////
 ////////                    ASSERTIONS                 /////////
 ////////////////////////////////////////////////////////////////
 
   // Check if flag sequence is detected
   property Receive_FlagDetect;
-    @(posedge Clk) Rx_Flag |-> ##2 Rx_FlagDetect;
+    @(posedge Clk) disable iff(!Rst) Rx_Flag |-> ##2 Rx_FlagDetect;
   endproperty
 
   Receive_FlagDetect_Assert    :  assert property (Receive_FlagDetect) $display("PASS: Receive_FlagDetect");
@@ -90,7 +95,7 @@ module assertions_hdlc (
   //What signals are set when in idle? !ValidFrame
   //Rx
   property Receive_IdlePattern;
-    @(posedge Clk) disable iff(Rx_AbortDetect) Rx_IdlePattern |-> ##1 !Rx_ValidFrame;
+    @(posedge Clk) disable iff(Rx_AbortDetect || !Rst) Rx_IdlePattern |-> ##1 !Rx_ValidFrame;
   endproperty
 
   Receive_IdlePattern_Assert    :  assert property (Receive_IdlePattern) //$display("PASS: Receive_IdlePattern");
@@ -109,7 +114,7 @@ module assertions_hdlc (
 
   //Add validframe
   property Receive_AbortPattern;
-    @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##2 Rx_AbortDetect;
+    @(posedge Clk) disable iff(!Rst) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##2 $rose(Rx_AbortDetect);
   endproperty
 
   Receive_AbortPattern_Assert      :  assert property (Receive_AbortPattern) $display("PASS: Receive_AbortPattern");
@@ -117,14 +122,14 @@ module assertions_hdlc (
 
   //Add validframe
   property Generate_AbortPattern;
-    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##4 Tx_AbortPattern;
+    @(posedge Clk) disable iff(!Rst) Tx_AbortFrame and Tx_ValidFrame |-> ##4 Tx_AbortPattern;
   endproperty
 
   Generate_AbortPattern_Assert     :  assert property (Generate_AbortPattern) $display("PASS: Generate_AbortPattern");
                                       else begin $display("ERROR(%0t): Tx did not generate Tx_AbortPattern",$time); ErrCntAssertions++; end
 
   property Tx_AbortTransmission;
-    @(posedge Clk) Tx_AbortFrame and Tx_ValidFrame |-> ##2 Tx_AbortedTrans;
+    @(posedge Clk) disable iff(!Rst) Tx_AbortFrame and Tx_ValidFrame |-> ##2 $rose(Tx_AbortedTrans);
   endproperty
 
   Tx_AbortTransmission_Assert            : assert property (Tx_AbortTransmission)$display("PASS: Tx_AbortedTransmission");
@@ -132,7 +137,7 @@ module assertions_hdlc (
 
 
   property RX_AbortSignal;
-    @(posedge Clk) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##3 Rx_AbortSignal;
+    @(posedge Clk) disable iff(!Rst) Rx_AbortPattern and Rx_ValidFrame [*8] |-> ##3 $rose(Rx_AbortSignal);
   endproperty
 
   RX_AbortSignal_Assert            : assert property (RX_AbortSignal)$display("PASS: Rx_Abortsignal");
@@ -140,23 +145,24 @@ module assertions_hdlc (
 
 
   property RX_EndofFrame;
-    @(posedge Clk) Rx_FlagDetect and Rx_ValidFrame |-> ##5 Rx_EoF;
+    @(posedge Clk) disable iff(!Rst) Rx_FlagDetect and Rx_ValidFrame |-> ##5 $rose(Rx_EoF);
   endproperty
 
   RX_EndofFrame_Assert            : assert property (RX_EndofFrame)$display("PASS: RX_EndofFrame");
                                     else begin $display("ERROR(%0t): Rx_EoF did not go high after Rx_FlagDetect during validframe",$time); ErrCntAssertions++; end
 
-  property RX_ReadReady;
-    @(posedge Clk) Rx_EoF and !Rx_AbortSignal and !Rx_FrameError |-> ##0 Rx_Ready [*(int'(Rx_FrameSize)+2)]; // or Rx_Ready throughout  Rx_Drop [->1];
-  endproperty
+//  property RX_ReadReady;
+//    int test;
+//    @(posedge Clk) disable iff(!Rst) (Rx_EoF and !Rx_AbortSignal and !Rx_FrameError,test = Rx_FrameSize) |->  Rx_Ready[*test]; // or Rx_Ready throughout  Rx_Drop [->1];
+//  endproperty
 
-  RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
-                                   else begin $display("ERROR(%0t): Rx_Ready did not go high when Frame was finished.",$time); ErrCntAssertions++; end
+//  RX_ReadReady_Assert            : assert property (RX_ReadReady)$display("PASS: RX_ReadReady");
+//                                   else begin $display("ERROR(%0t): Rx_Ready did not go high when Frame was finished.",$time); ErrCntAssertions++; end
   //Add when Rx Buffer is not ready to be read, abort_signal or frame error is asserted.
-  property RX_ReadNotReady;
-    @(posedge Clk) Rx_EoF and (Rx_AbortSignal || Rx_FrameError) |-> ##0 !Rx_Ready throughout (Rx_ValidFrame[->1]);
-  endproperty
+//  property RX_ReadNotReady;
+//    @(posedge Clk) disable iff(!Rst) Rx_EoF and (Rx_AbortSignal || Rx_FrameError) |-> ##0 !Rx_Ready throughout (Rx_ValidFrame[->1]);
+//  endproperty
 
-  RX_ReadNotReady_Assert            : assert property (RX_ReadNotReady)//$display("PASS: RX_ReadNotReady");
-                                      else begin $display("ERROR(%0t): Rx_Ready did not go low when Frame was aborted or had errors.",$time); ErrCntAssertions++; end
+//  RX_ReadNotReady_Assert            : assert property (RX_ReadNotReady)//$display("PASS: RX_ReadNotReady");
+//                                    else begin $display("ERROR(%0t): Rx_Ready did not go low when Frame was aborted or had errors.",$time); ErrCntAssertions++; end
 endmodule
