@@ -1,0 +1,1108 @@
+# vsim -assertdebug -c -voptargs="+acc" -coverage test_hdlc bind_hdlc -do "
+# log -r *
+# run -all; coverage report -assert -cover -cvg -details -file coverage_rep.txt; exit" 
+# Start time: 23:07:46 on Apr 30,2019
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxBuff(fast)".
+# //  Questa Sim-64
+# //  Version 10.5c linux_x86_64 Jul 20 2016
+# //
+# //  Copyright 1991-2016 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.test_hdlc(fast)
+# Loading work.in_hdlc(fast)
+# Loading work.Hdlc(fast)
+# Loading work.AddressIF(fast)
+# Loading work.TxController(fast)
+# Loading work.TxBuff(fast)
+# Loading work.TxFCS(fast)
+# Loading work.TxChannel(fast)
+# Loading work.RxController(fast)
+# Loading work.RxBuff(fast)
+# Loading work.RxFCS(fast)
+# Loading work.RxChannel(fast)
+# Loading work.testPr_hdlc(fast)
+# Loading work.assertions_hdlc(fast)
+# Loading work.bind_hdlc(fast)
+# ** Warning: (vsim-3839) test_hdlc.sv(18): Variable '/test_hdlc/uin_hdlc/Rx_Ready', driven via a port connection, is multiply driven. See test_hdlc.sv(111).
+#    Time: 0 ns  Iteration: 0  Instance: /test_hdlc File: test_hdlc.sv
+# 
+# log -r *
+# run -all
+# *************************************************************
+#                    0 - Starting Test Program
+# *************************************************************
+# *************************************************************
+#                 1000 - Starting task Receive - Normal, Size=1
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=1
+# *************************************************************
+#                29250 - Starting task Receive - Normal, Size=126
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=126
+# *************************************************************
+#               690250 - Starting task Receive - Normal, Size=69
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=69
+# *************************************************************
+#              1064750 - Starting task Receive - Normal, Size=104
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=104
+# *************************************************************
+#              1613750 - Starting task Receive - Normal, Size=95
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=95
+# *************************************************************
+#              2116250 - Starting task Receive - Normal, Size=101
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=101
+# *************************************************************
+#              2652250 - Starting task Receive - Normal, Size=87
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=87
+# *************************************************************
+#              3114750 - Starting task Receive - Normal, Size=88
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=88
+# *************************************************************
+#              3584750 - Starting task Receive - Normal, Size=19
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=19
+# *************************************************************
+#              3704250 - Starting task Receive - Normal, Size=52
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=52
+# *************************************************************
+#              3990750 - Starting task Receive - Normal, Size=9
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=9
+# *************************************************************
+#              4059250 - Starting task Receive - Normal, Size=48
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=48
+# *************************************************************
+#              4324250 - Starting task Receive - Normal, Size=119
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=119
+# *************************************************************
+#              4951250 - Starting task Receive - Normal, Size=107
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=107
+# *************************************************************
+#              5515250 - Starting task Receive - Normal, Size=105
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=105
+# *************************************************************
+#              6069250 - Starting task Receive - Normal, Size=8
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=8
+# *************************************************************
+#              6132750 - Starting task Receive - Normal, Size=32
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=32
+# *************************************************************
+#              6317250 - Starting task Receive - Normal, Size=106
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=106
+# *************************************************************
+#              6879250 - Starting task Receive - Normal, Size=38
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=38
+# *************************************************************
+#              7097250 - Starting task Receive - Normal, Size=121
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyNormalReceiveRXSC, RX_SC=00100001
+# PASS: a_RxLen_equal_Size, Rx_Len=121
+# *************************************************************
+#              7737750 - Starting task Receive - Abort, Size=1
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(7762750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=1
+# *************************************************************
+#              7893250 - Starting task Receive - Abort, Size=126
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(8426250): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=126
+# *************************************************************
+#              8556750 - Starting task Receive - Abort, Size=123
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(9077250): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=123
+# *************************************************************
+#              9207750 - Starting task Receive - Abort, Size=97
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(9621750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=97
+# *************************************************************
+#              9752250 - Starting task Receive - Abort, Size=105
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(10199750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=105
+# *************************************************************
+#             10330250 - Starting task Receive - Abort, Size=111
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(10801750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=111
+# *************************************************************
+#             10932250 - Starting task Receive - Abort, Size=11
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(10999750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=11
+# *************************************************************
+#             11130250 - Starting task Receive - Abort, Size=77
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(11464750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=77
+# *************************************************************
+#             11595250 - Starting task Receive - Abort, Size=68
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(11891750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=68
+# *************************************************************
+#             12022250 - Starting task Receive - Abort, Size=106
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(12474750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=106
+# *************************************************************
+#             12605250 - Starting task Receive - Abort, Size=100
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(13033750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=100
+# *************************************************************
+#             13164250 - Starting task Receive - Abort, Size=110
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(13631750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=110
+# *************************************************************
+#             13762250 - Starting task Receive - Abort, Size=99
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(14184250): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=99
+# *************************************************************
+#             14314750 - Starting task Receive - Abort, Size=87
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(14689750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=87
+# *************************************************************
+#             14820250 - Starting task Receive - Abort, Size=61
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(15088750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=61
+# *************************************************************
+#             15219250 - Starting task Receive - Abort, Size=34
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(15380750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=34
+# *************************************************************
+#             15511250 - Starting task Receive - Abort, Size=12
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(15580250): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=12
+# *************************************************************
+#             15710750 - Starting task Receive - Abort, Size=67
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(16005750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=67
+# *************************************************************
+#             16136250 - Starting task Receive - Abort, Size=67
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(16429750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=67
+# *************************************************************
+#             16560250 - Starting task Receive - Abort, Size=43
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_AbortPattern
+# PASS: Rx_Abortsignal
+# ERROR(16755750): RxBuff was not ready to be read when Rx_Ready was asserted.
+# PASS: VerifyAbortReceiveRXSC, Rx_SC=00101000
+# PASS: a_RxLen_equal_Size, Rx_Len=43
+# *************************************************************
+#             16891250 - Starting task Receive - Overflow, Size=126
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyOverflowReceiveRXSC, RX_SC=00010001
+# PASS: a_RxLen_equal_Size, Rx_Len=126
+# *************************************************************
+#             17572250 - Starting task Receive - FCS error, Size=1
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             17727250 - Starting task Receive - FCS error, Size=126
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             18388750 - Starting task Receive - FCS error, Size=18
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             18612750 - Starting task Receive - FCS error, Size=54
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             18981750 - Starting task Receive - FCS error, Size=111
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             19585250 - Starting task Receive - FCS error, Size=51
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             19945250 - Starting task Receive - FCS error, Size=120
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             20584250 - Starting task Receive - FCS error, Size=77
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             21048250 - Starting task Receive - FCS error, Size=31
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             21324750 - Starting task Receive - FCS error, Size=101
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             21885250 - Starting task Receive - FCS error, Size=71
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             22323250 - Starting task Receive - FCS error, Size=77
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             22786250 - Starting task Receive - FCS error, Size=82
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             23275750 - Starting task Receive - FCS error, Size=89
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             23787250 - Starting task Receive - FCS error, Size=99
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             24336750 - Starting task Receive - FCS error, Size=66
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             24754750 - Starting task Receive - FCS error, Size=90
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             25269750 - Starting task Receive - FCS error, Size=58
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             25657750 - Starting task Receive - FCS error, Size=22
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             25896250 - Starting task Receive - FCS error, Size=106
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyFCSErrorReceiveRXSC, RX_SC=00100100
+# *************************************************************
+#             26481750 - Starting task Receive - Drop, Size=1
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=1
+# *************************************************************
+#             26642250 - Starting task Receive - Drop, Size=126
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=126
+# *************************************************************
+#             27309750 - Starting task Receive - Drop, Size=125
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=125
+# *************************************************************
+#             27973250 - Starting task Receive - Drop, Size=72
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=72
+# *************************************************************
+#             28423750 - Starting task Receive - Drop, Size=62
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=62
+# *************************************************************
+#             28833750 - Starting task Receive - Drop, Size=18
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=18
+# *************************************************************
+#             29062250 - Starting task Receive - Drop, Size=110
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=110
+# *************************************************************
+#             29665750 - Starting task Receive - Drop, Size=115
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=115
+# *************************************************************
+#             30290250 - Starting task Receive - Drop, Size=77
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=77
+# *************************************************************
+#             30760750 - Starting task Receive - Drop, Size=95
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=95
+# *************************************************************
+#             31306250 - Starting task Receive - Drop, Size=52
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=52
+# *************************************************************
+#             31673250 - Starting task Receive - Drop, Size=87
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=87
+# *************************************************************
+#             32183750 - Starting task Receive - Drop, Size=104
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=104
+# *************************************************************
+#             32760750 - Starting task Receive - Drop, Size=90
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=90
+# *************************************************************
+#             33282250 - Starting task Receive - Drop, Size=27
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=27
+# *************************************************************
+#             33549250 - Starting task Receive - Drop, Size=24
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=24
+# *************************************************************
+#             33802250 - Starting task Receive - Drop, Size=13
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=13
+# *************************************************************
+#             34011750 - Starting task Receive - Drop, Size=51
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=51
+# *************************************************************
+#             34375750 - Starting task Receive - Drop, Size=27
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=27
+# *************************************************************
+#             34643250 - Starting task Receive - Drop, Size=40
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: RX_ReadReady
+# PASS: VerifyDroppedFrameRXSC, RX_SC=00100000
+# PASS: a_RxLen_equal_Size, Rx_Len=40
+# *************************************************************
+#             34968750 - Starting task Receive - Non-byte aligned, Size=1
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             35120750 - Starting task Receive - Non-byte aligned, Size=126
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             35781250 - Starting task Receive - Non-byte aligned, Size=38
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             36082750 - Starting task Receive - Non-byte aligned, Size=96
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             36622750 - Starting task Receive - Non-byte aligned, Size=27
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             36881750 - Starting task Receive - Non-byte aligned, Size=111
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             37483250 - Starting task Receive - Non-byte aligned, Size=72
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             37923750 - Starting task Receive - Non-byte aligned, Size=121
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             38558750 - Starting task Receive - Non-byte aligned, Size=122
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             39203250 - Starting task Receive - Non-byte aligned, Size=9
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             39389250 - Starting task Receive - Non-byte aligned, Size=55
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             39760250 - Starting task Receive - Non-byte aligned, Size=18
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             39980750 - Starting task Receive - Non-byte aligned, Size=64
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             40392250 - Starting task Receive - Non-byte aligned, Size=57
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             40773250 - Starting task Receive - Non-byte aligned, Size=116
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             41392750 - Starting task Receive - Non-byte aligned, Size=78
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             41856250 - Starting task Receive - Non-byte aligned, Size=67
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             42276250 - Starting task Receive - Non-byte aligned, Size=88
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             42779250 - Starting task Receive - Non-byte aligned, Size=101
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             43338250 - Starting task Receive - Non-byte aligned, Size=37
+# *************************************************************
+# PASS: Receive_FlagDetect
+# PASS: Receive_FlagDetect
+# PASS: RX_EndofFrame
+# PASS: VerifyNonByteAlignedRXSC, RX_SC=00000100
+# *************************************************************
+#             43641250 - Starting task Transmit - Normal, Size=1
+# *************************************************************
+# ERROR(43643750): Tx_Done=0, not asserted after reading entire TxBuff!
+# ERROR(43689750): Tx did not generate Tx_IdlePattern
+# ERROR: Tx_Byte[0]=11111111, not the correct TX byte value!
+# ERROR: Tx_FCS_Bytes=ffff, not the correct FCS value: aa01!
+# *************************************************************
+#             43696750 - Starting task Transmit - Normal, Size=126
+# *************************************************************
+# PASS: a_TxFullAsserted
+# PASS: a_TxDoneAsserted
+# ERROR(44931250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             44938250 - Starting task Transmit - Normal, Size=111
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(46025750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             46032750 - Starting task Transmit - Normal, Size=116
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(47167750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             47174750 - Starting task Transmit - Normal, Size=118
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(48332250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             48339250 - Starting task Transmit - Normal, Size=7
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(48431750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             48438750 - Starting task Transmit - Normal, Size=117
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(49581250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             49588250 - Starting task Transmit - Normal, Size=90
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(50474250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             50481250 - Starting task Transmit - Normal, Size=115
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(51604750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             51611750 - Starting task Transmit - Normal, Size=85
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(52451750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             52458750 - Starting task Transmit - Normal, Size=56
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(53020750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             53027750 - Starting task Transmit - Normal, Size=61
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(53635750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             53642750 - Starting task Transmit - Normal, Size=39
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(54042250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             54049250 - Starting task Transmit - Normal, Size=65
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(54694750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             54701750 - Starting task Transmit - Normal, Size=2
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(54754750): Tx did not generate Tx_IdlePattern
+# ERROR: Tx_FCS_Bytes=ffff, not the correct FCS value: c843!
+# *************************************************************
+#             54761750 - Starting task Transmit - Normal, Size=97
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(55717250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             55724250 - Starting task Transmit - Normal, Size=125
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(56942750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             56949750 - Starting task Transmit - Normal, Size=67
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(57614750): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             57621750 - Starting task Transmit - Normal, Size=45
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(58078250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             58085250 - Starting task Transmit - Normal, Size=80
+# *************************************************************
+# PASS: a_TxDoneAsserted
+# ERROR(58877250): Tx did not generate Tx_IdlePattern
+# *************************************************************
+#             58889250 - Starting task Transmit - Abort, Size=1
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             58931750 - Starting task Transmit - Abort, Size=126
+# *************************************************************
+# PASS: a_TxFullAsserted
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             59944250 - Starting task Transmit - Abort, Size=60
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# ERROR: TX=0, not the correct value in Flag!
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             60522250 - Starting task Transmit - Abort, Size=111
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             61301250 - Starting task Transmit - Abort, Size=21
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             61506750 - Starting task Transmit - Abort, Size=43
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             61900750 - Starting task Transmit - Abort, Size=70
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             62596750 - Starting task Transmit - Abort, Size=50
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             62939750 - Starting task Transmit - Abort, Size=24
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             63139750 - Starting task Transmit - Abort, Size=8
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             63219250 - Starting task Transmit - Abort, Size=63
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             63630250 - Starting task Transmit - Abort, Size=78
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             64192750 - Starting task Transmit - Abort, Size=64
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             64588250 - Starting task Transmit - Abort, Size=14
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             64745750 - Starting task Transmit - Abort, Size=60
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             65152750 - Starting task Transmit - Abort, Size=122
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             66066250 - Starting task Transmit - Abort, Size=51
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             66452750 - Starting task Transmit - Abort, Size=32
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             66668750 - Starting task Transmit - Abort, Size=119
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             67827750 - Starting task Transmit - Abort, Size=42
+# *************************************************************
+# PASS: TX_AbortedTransmission
+# PASS: Generate_AbortPattern
+# *************************************************************
+#             68107250 - Finishing Test Program
+# *************************************************************
+# ** Note: $stop    : testPr_hdlc.sv(51)
+#    Time: 68107250 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at testPr_hdlc.sv line 51
+# Stopped at testPr_hdlc.sv line 51
+#  coverage report -assert -cover -cvg -details -file coverage_rep.txt
+#  exit
+# 
+# 
+# *********************************
+# *                               *
+# *                     XX   XX   *
+# *                      XX XX    *
+# *  SIMULATION FAILED!   XXX     *
+# *                      XX XX    *
+# *                     XX   XX   *
+# *                               *
+# * 	Assertion Errors: 45	  *
+# *                               *
+# *********************************
+# 
+# End time: 23:07:51 on Apr 30,2019, Elapsed time: 0:00:05
+# Errors: 0, Warnings: 1

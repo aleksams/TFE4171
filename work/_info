@@ -1,0 +1,396 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/courses/desdigsys2/2019s/dds219s03/termproject_partb/hdlc/tb
+T_opt
+!s110 1556658467
+V7]AzJn?fRUWAPkkkTc5GV1
+04 9 4 work test_hdlc fast 0
+04 9 4 work bind_hdlc fast 0
+=1-90b11c1d54d8-5cc8b922-8d06f-2b39
+o-quiet -auto_acc_if_foreign -work work +acc
+Z1 tCvgOpt 0
+n@_opt
+OL;O;10.5c;63
+vAddressIF
+Z2 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z3 !s110 1556658465
+!i10b 1
+!s100 om>9?On<K03W7@@f9TGnJ3
+I5Y9@L6Z2cFXIVQHB:5VJT0
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+!s105 AddressIF_sv_unit
+S1
+R0
+Z5 w1553460874
+8../rtl/AddressIF.sv
+F../rtl/AddressIF.sv
+L0 8
+Z6 OL;L;10.5c;63
+r1
+!s85 0
+31
+Z7 !s108 1556658464.000000
+Z8 !s107 ../rtl/TxFCS.sv|../rtl/TxBuff.sv|../rtl/TxChannel.sv|../rtl/TxController.sv|../rtl/RxFCS.sv|../rtl/RxBuff.sv|../rtl/RxChannel.sv|../rtl/RxController.sv|../rtl/AddressIF.sv|../rtl/hdlc.sv|
+Z9 !s90 -sv|../rtl/hdlc.sv|../rtl/AddressIF.sv|../rtl/RxController.sv|../rtl/RxChannel.sv|../rtl/RxBuff.sv|../rtl/RxFCS.sv|../rtl/TxController.sv|../rtl/TxChannel.sv|../rtl/TxBuff.sv|../rtl/TxFCS.sv|
+!i113 0
+Z10 o-sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R1
+n@address@i@f
+vassertions_hdlc
+R2
+R3
+!i10b 1
+!s100 ?Ge3gJE^Rc]Pcj<3P@Io71
+IT`JSETSB?BeA8Q@^2LM?80
+R4
+!s105 assertions_hdlc_sv_unit
+S1
+R0
+w1556658460
+8assertions_hdlc.sv
+Fassertions_hdlc.sv
+L0 7
+R6
+r1
+!s85 0
+31
+Z11 !s108 1556658465.000000
+Z12 !s107 assertions_hdlc.sv|bind_hdlc.sv|testPr_hdlc.sv|test_hdlc.sv|in_hdlc.sv|
+Z13 !s90 +cover=bcefsx|-sv|in_hdlc.sv|test_hdlc.sv|testPr_hdlc.sv|bind_hdlc.sv|assertions_hdlc.sv|
+!i113 0
+Z14 !s102 +cover=bcefsx
+Z15 o+cover=bcefsx -sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R1
+vbind_hdlc
+R2
+R3
+!i10b 1
+!s100 6cX_Sca1kg2=9MZbYX8zB1
+Iz6hc[DZaLOS2FLOf;]UoA0
+R4
+!s105 bind_hdlc_sv_unit
+S1
+R0
+w1556289427
+8bind_hdlc.sv
+Fbind_hdlc.sv
+L0 7
+R6
+r1
+!s85 0
+31
+R11
+R12
+R13
+!i113 0
+R14
+R15
+R1
+vHdlc
+R2
+R3
+!i10b 1
+!s100 @zz><?WO0lKCB`Cn=Kg4C1
+ILj[7hXdc8d_In0D_US`@^1
+R4
+!s105 hdlc_sv_unit
+S1
+R0
+Z16 w1553460875
+8../rtl/hdlc.sv
+F../rtl/hdlc.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@hdlc
+Yin_hdlc
+R2
+R3
+!i10b 1
+!s100 L3j=EA=GNk3k3S7>50ChE0
+IOC0>=UfH80YEL2z;WL2]H2
+R4
+!s105 in_hdlc_sv_unit
+S1
+R0
+w1556651707
+8in_hdlc.sv
+Fin_hdlc.sv
+L0 7
+R6
+r1
+!s85 0
+31
+R11
+R12
+R13
+!i113 0
+R14
+R15
+R1
+vRxBuff
+R2
+R3
+!i10b 1
+!s100 K;CR=f3BF8Bb^mLCFRkzB0
+IjOCJ:@TnL3P3HjF;]^2E^3
+R4
+!s105 RxBuff_sv_unit
+S1
+R0
+R5
+8../rtl/RxBuff.sv
+F../rtl/RxBuff.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@rx@buff
+vRxChannel
+R2
+R3
+!i10b 1
+!s100 `NTAeAaSWd@i<CcbD8NC>1
+Ie8dkn;@@W]=_FP;2:2]Fz3
+R4
+!s105 RxChannel_sv_unit
+S1
+R0
+R5
+8../rtl/RxChannel.sv
+F../rtl/RxChannel.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@rx@channel
+vRxController
+R2
+R3
+!i10b 1
+!s100 5<k<HBTfblSm8NoY^eHLL1
+Ida43?40ailQ>2Y4Bh7d2:2
+R4
+!s105 RxController_sv_unit
+S1
+R0
+R5
+8../rtl/RxController.sv
+F../rtl/RxController.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@rx@controller
+vRxFCS
+R2
+R3
+!i10b 1
+!s100 [Me8Gbb2?6hj7@emBAY<^0
+IE]3RR07ZiY5OnzBHK5la23
+R4
+!s105 RxFCS_sv_unit
+S1
+R0
+R5
+8../rtl/RxFCS.sv
+F../rtl/RxFCS.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@rx@f@c@s
+vtest_hdlc
+R2
+R3
+!i10b 1
+!s100 AMO?BFVIa3SoPAZ2Mn<bS2
+IF5K5J9dz_CYff:[Q5@[iO2
+R4
+!s105 test_hdlc_sv_unit
+S1
+R0
+w1556632113
+8test_hdlc.sv
+Ftest_hdlc.sv
+L0 7
+R6
+r1
+!s85 0
+31
+R11
+R12
+R13
+!i113 0
+R14
+R15
+R1
+4testPr_hdlc
+R2
+R3
+!i10b 1
+!s100 RmoRG@7j53BYYn@[jRkgU3
+IkHHdE1]P8GzKjDJBe5n[X0
+R4
+!s105 testPr_hdlc_sv_unit
+S1
+R0
+w1556651645
+8testPr_hdlc.sv
+FtestPr_hdlc.sv
+L0 17
+R6
+r1
+!s85 0
+31
+R11
+R12
+R13
+!i113 0
+R14
+R15
+R1
+ntest@pr_hdlc
+vTxBuff
+R2
+R3
+!i10b 1
+!s100 NY65C2D[[F@SDMVBI5VDd0
+INW;BYhl1dLzChaO^2`zDF0
+R4
+!s105 TxBuff_sv_unit
+S1
+R0
+R5
+8../rtl/TxBuff.sv
+F../rtl/TxBuff.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@tx@buff
+vTxChannel
+R2
+R3
+!i10b 1
+!s100 Ai7=^M6Veoh;zIh0MMK140
+I9czDOISeHET`BSnBmR>8E1
+R4
+!s105 TxChannel_sv_unit
+S1
+R0
+R16
+8../rtl/TxChannel.sv
+F../rtl/TxChannel.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@tx@channel
+vTxController
+R2
+R3
+!i10b 1
+!s100 XmlGYC]F@MIBGNED6KQg_0
+IPm0lMKDKYnkOU[^VT<hI=3
+R4
+!s105 TxController_sv_unit
+S1
+R0
+R16
+8../rtl/TxController.sv
+F../rtl/TxController.sv
+L0 7
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@tx@controller
+vTxFCS
+R2
+R3
+!i10b 1
+!s100 5SS6AY58]6Og[JFHBT_]43
+IcUXKR;`XY17Zedj3SSz6Z2
+R4
+!s105 TxFCS_sv_unit
+S1
+R0
+R16
+8../rtl/TxFCS.sv
+F../rtl/TxFCS.sv
+L0 8
+R6
+r1
+!s85 0
+31
+R7
+R8
+R9
+!i113 0
+R10
+R1
+n@tx@f@c@s

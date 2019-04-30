@@ -1,0 +1,239 @@
+COVERGROUP COVERAGE:
+-----------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal    Status               
+                                                                                              
+-----------------------------------------------------------------------------------------------
+ TYPE /test_hdlc/hdlc_rx_cg                            100.0%        100    Covered              
+    covered/total bins:                                    16         16                      
+    missing/total bins:                                     0         16                      
+    % Hit:                                             100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_FrameSize                100.0%        100    Covered              
+        covered/total bins:                                 1          1                      
+        missing/total bins:                                 0          1                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_Byte                     100.0%        100    Covered              
+        covered/total bins:                                 3          3                      
+        missing/total bins:                                 0          3                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_Ready                    100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_Drop                     100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_FrameError               100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_Abort                    100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_Overflow                 100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_rx_cg::Rx_FCSen                    100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+ Covergroup instance \/test_hdlc/rx_cg_inst            100.0%        100    Covered              
+    covered/total bins:                                    16         16                      
+    missing/total bins:                                     0         16                      
+    % Hit:                                             100.0%        100                      
+    Coverpoint Rx_FrameSize                            100.0%        100    Covered              
+        covered/total bins:                                 1          1                      
+        missing/total bins:                                 0          1                      
+        % Hit:                                         100.0%        100                      
+        bin FrameSizes_Valid                           136215          1    Covered              
+        default bin FrameSizes_Invalid                      0               ZERO                 
+    Coverpoint Rx_Byte                                 100.0%        100    Covered              
+        covered/total bins:                                 3          3                      
+        missing/total bins:                                 0          3                      
+        % Hit:                                         100.0%        100                      
+        bin FrameFlag                                    2255          1    Covered              
+        bin AbortPattern                                  214          1    Covered              
+        bin Idle                                          795          1    Covered              
+        default bin Others                             132951               Occurred             
+    Coverpoint Rx_Ready                                100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Ready                                        3348          1    Covered              
+        bin NotReady                                   132867          1    Covered              
+    Coverpoint Rx_Drop                                 100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Dropped                                        20          1    Covered              
+        bin NotDropped                                 136195          1    Covered              
+    Coverpoint Rx_FrameError                           100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin FrameError                                  59979          1    Covered              
+        bin NoFrameError                                76236          1    Covered              
+    Coverpoint Rx_Abort                                100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Abort                                        5590          1    Covered              
+        bin NoAbort                                    130625          1    Covered              
+    Coverpoint Rx_Overflow                             100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Overflow                                      278          1    Covered              
+        bin NoOverflow                                 135937          1    Covered              
+    Coverpoint Rx_FCSen                                100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin FCSenabled                                  68574          1    Covered              
+        bin FCSdisabled                                 67641          1    Covered              
+ TYPE /test_hdlc/hdlc_tx_cg                            100.0%        100    Covered              
+    covered/total bins:                                    12         12                      
+    missing/total bins:                                     0         12                      
+    % Hit:                                             100.0%        100                      
+    Coverpoint hdlc_tx_cg::Tx_FrameSize                100.0%        100    Covered              
+        covered/total bins:                                 1          1                      
+        missing/total bins:                                 0          1                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_tx_cg::Tx_Byte                     100.0%        100    Covered              
+        covered/total bins:                                 3          3                      
+        missing/total bins:                                 0          3                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_tx_cg::Tx_Done                     100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_tx_cg::Tx_AbortFrame               100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_tx_cg::Tx_AbortedTrans             100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+    Coverpoint hdlc_tx_cg::Tx_Full                     100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+ Covergroup instance \/test_hdlc/tx_cg_inst            100.0%        100    Covered              
+    covered/total bins:                                    12         12                      
+    missing/total bins:                                     0         12                      
+    % Hit:                                             100.0%        100                      
+    Coverpoint Tx_FrameSize                            100.0%        100    Covered              
+        covered/total bins:                                 1          1                      
+        missing/total bins:                                 0          1                      
+        % Hit:                                         100.0%        100                      
+        bin FrameSizes_Valid                           136215          1    Covered              
+        default bin FrameSizes_Invalid                      0               ZERO                 
+    Coverpoint Tx_Byte                                 100.0%        100    Covered              
+        covered/total bins:                                 3          3                      
+        missing/total bins:                                 0          3                      
+        % Hit:                                         100.0%        100                      
+        bin FrameFlag                                    2255          1    Covered              
+        bin AbortPattern                                  214          1    Covered              
+        bin Idle                                          795          1    Covered              
+        default bin Others                             132951               Occurred             
+    Coverpoint Tx_Done                                 100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Done                                        89246          1    Covered              
+        bin NotDone                                     46969          1    Covered              
+    Coverpoint Tx_AbortFrame                           100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Abort                                          20          1    Covered              
+        bin DontAbort                                  136195          1    Covered              
+    Coverpoint Tx_AbortedTrans                         100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Aborted                                       419          1    Covered              
+        bin NotAborted                                 135796          1    Covered              
+    Coverpoint Tx_Full                                 100.0%        100    Covered              
+        covered/total bins:                                 2          2                      
+        missing/total bins:                                 0          2                      
+        % Hit:                                         100.0%        100                      
+        bin Full                                            8          1    Covered              
+        bin NotFull                                    136207          1    Covered              
+
+TOTAL COVERGROUP COVERAGE: 100.0%  COVERGROUP TYPES: 2
+
+ASSERTION RESULTS:
+-------------------------------------------------------
+Name                 File(Line)           Failure Pass 
+                                          Count   Count 
+-------------------------------------------------------
+/test_hdlc/u_testPr/ReadTransmittedData/#anonblk#119480755#274#4#/a_TxStartFlag
+                     testPr_hdlc.sv(276)        0   320
+/test_hdlc/u_testPr/ReadTransmittedData/a_ZeroInsertion
+                     testPr_hdlc.sv(300)        0   277
+/test_hdlc/u_testPr/ReadTransmittedData/a_TxEndFlag
+                     testPr_hdlc.sv(320)        0    20
+/test_hdlc/u_testPr/ReadTransmittedData/a_TxAbortFlag
+                     testPr_hdlc.sv(325)        1    19
+/test_hdlc/u_testPr/Transmit/a_TxFullAsserted
+                     testPr_hdlc.sv(363)        0     2
+/test_hdlc/u_testPr/Transmit/a_TxDoneAsserted
+                     testPr_hdlc.sv(383)        1    19
+/test_hdlc/u_testPr/VerifyAbortReceive/#anonblk#119480755#429#4#/a_abort_RXSC_content
+                     testPr_hdlc.sv(440)        0    20
+/test_hdlc/u_testPr/VerifyAbortReceive/#anonblk#119480755#429#4#/a_RxLen_equal_Size
+                     testPr_hdlc.sv(448)        0    20
+/test_hdlc/u_testPr/VerifyAbortReceive/#anonblk#119480755#429#4#/#anonblk#119480755#455#4#/a_abort_RxBuff_content
+                     testPr_hdlc.sv(457)        0  2560
+/test_hdlc/u_testPr/VerifyNormalReceive/#anonblk#119480755#472#4#/a_normal_RXSC_content
+                     testPr_hdlc.sv(486)        0    20
+/test_hdlc/u_testPr/VerifyNormalReceive/#anonblk#119480755#472#4#/a_RxLen_equal_Size
+                     testPr_hdlc.sv(494)        0    20
+/test_hdlc/u_testPr/VerifyNormalReceive/#anonblk#119480755#472#4#/#anonblk#119480755#501#4#/a_normal_RxBuff_content
+                     testPr_hdlc.sv(503)        0  1435
+/test_hdlc/u_testPr/VerifyOverflowReceive/a_overflow_RXSC_content
+                     testPr_hdlc.sv(525)        0     1
+/test_hdlc/u_testPr/VerifyOverflowReceive/a_RxLen_equal_Size
+                     testPr_hdlc.sv(533)        0     1
+/test_hdlc/u_testPr/VerifyOverflowReceive/#anonblk#119480755#540#4#/a_overflow_RxBuff_content
+                     testPr_hdlc.sv(542)        0   126
+/test_hdlc/u_testPr/VerifyFCSErrorReceive/#anonblk#119480755#555#4#/a_FCSError_RXSC_content
+                     testPr_hdlc.sv(567)        0    20
+/test_hdlc/u_testPr/VerifyFCSErrorReceive/#anonblk#119480755#555#4#/#anonblk#119480755#574#4#/a_FCSError_RxBuff_content
+                     testPr_hdlc.sv(576)        0  2560
+/test_hdlc/u_testPr/VerifyNonByteAlignedReceive/#anonblk#119480755#590#4#/a_NonByteAligned_RXSC_content
+                     testPr_hdlc.sv(602)        0    20
+/test_hdlc/u_testPr/VerifyNonByteAlignedReceive/#anonblk#119480755#590#4#/#anonblk#119480755#609#4#/a_NonByteAligned_RxBuff_content
+                     testPr_hdlc.sv(611)        0  2560
+/test_hdlc/u_testPr/VerifyDroppedFrameReceive/#anonblk#119480755#625#4#/a_dropped_RXSC_content
+                     testPr_hdlc.sv(637)        0    20
+/test_hdlc/u_testPr/VerifyDroppedFrameReceive/#anonblk#119480755#625#4#/a_RxLen_equal_Size
+                     testPr_hdlc.sv(645)        0    20
+/test_hdlc/u_testPr/VerifyDroppedFrameReceive/#anonblk#119480755#625#4#/#anonblk#119480755#652#4#/a_dropped_RxBuff_content
+                     testPr_hdlc.sv(654)        0  2560
+/test_hdlc/u_testPr/VerifyNormalTransmit/#anonblk#119480755#671#4#/a_CorrectTxFCS
+                     testPr_hdlc.sv(692)        2    18
+/test_hdlc/u_testPr/VerifyNormalTransmit/#anonblk#119480755#671#4#/#anonblk#119480755#684#4#/a_CorrectTxData
+                     testPr_hdlc.sv(685)        1  1522
+/test_hdlc/u_assertion_bind/Receive_FlagDetect_Assert
+                     assertions_hdlc.sv(71)       0   182
+/test_hdlc/u_assertion_bind/Receive_IdlePattern_Assert
+                     assertions_hdlc.sv(77)       0 72850
+/test_hdlc/u_assertion_bind/Generate_IdlePattern_Assert
+                     assertions_hdlc.sv(84)      20     0
+/test_hdlc/u_assertion_bind/Receive_AbortPattern_Assert
+                     assertions_hdlc.sv(91)       0    20
+/test_hdlc/u_assertion_bind/Generate_AbortPattern_Assert
+                     assertions_hdlc.sv(98)       0    20
+/test_hdlc/u_assertion_bind/TX_AbortTransmission_Assert
+                     assertions_hdlc.sv(105)       0    20
+/test_hdlc/u_assertion_bind/RX_AbortSignal_Assert
+                     assertions_hdlc.sv(113)       0    20
+/test_hdlc/u_assertion_bind/RX_EndofFrame_Assert
+                     assertions_hdlc.sv(121)       0    81
+/test_hdlc/u_assertion_bind/RX_ReadReady_Assert
+                     assertions_hdlc.sv(128)      20    41
