@@ -36,7 +36,7 @@ interface in_hdlc ();
   logic       Tx_FCSDone;
   logic       Tx_WriteFCS;
   logic       Tx_Full;
-  logic [7:0  Tx_FrameSize;
+  logic [7:0] Tx_FrameSize;
   logic       Tx_RdBuff;
 
 
