@@ -89,10 +89,6 @@ module test_hdlc ();
       bins Done    = { 1 };
       bins NotDone = { 0 };
     }
-    Tx_Enable: coverpoint uin_hdlc.TxEN {
-      bins Enabled    = { 1 };
-      bins NotEnabled = { 0 };
-    }
     Tx_AbortFrame: coverpoint uin_hdlc.Tx_AbortFrame {
       bins Abort     = { 1 };
       bins DontAbort = { 0 };

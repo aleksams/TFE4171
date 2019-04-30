@@ -273,10 +273,10 @@ program testPr_hdlc(
     // Check start flag
     for(int i = 0; i < 8; i++) begin
       @(posedge uin_hdlc.Clk);
-      a_CorrectTxOutput: assert (uin_hdlc.Tx == Flag[i]) else begin
-          $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
-          TbErrorCnt++;
-        end
+      a_TxStartFlag: assert (uin_hdlc.Tx == Flag[i]) else begin
+        $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
+        TbErrorCnt++;
+      end
     end
 
     // Read data
@@ -298,8 +298,8 @@ program testPr_hdlc(
         PrevData = PrevData >> 1;
         PrevData[7] = uin_hdlc.Tx;
         a_ZeroInsertion: assert (uin_hdlc.Tx == 0) else begin
-            $display("ERROR: No zero inserted!");
-            TbErrorCnt++;
+          $display("ERROR: No zero inserted!");
+          TbErrorCnt++;
         end
       end
 
@@ -313,6 +313,18 @@ program testPr_hdlc(
       // Insert Abort signal at a random time point
       if(TxBytes == AbortTime && TxBits % 8 == 0) begin
         WriteAddress(`Tx_SC, 8'h04);
+      end
+    end
+
+    if(!Abort) begin
+      a_TxEndFlag: assert (PrevData == Flag) else begin
+        $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
+        TbErrorCnt++;
+      end
+    end else begin
+      a_TxAbortFlag: assert (PrevData == AbortFlag) else begin
+        $display("ERROR: TX=%1b, not the correct value in Flag!", uin_hdlc.Tx);
+        TbErrorCnt++;
       end
     end
 
