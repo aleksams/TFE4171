@@ -106,7 +106,7 @@ module assertions_hdlc (
     @(posedge Clk) disable iff(!Rst) Tx_AbortFrame and Tx_ValidFrame |-> ##2 $rose(Tx_AbortedTrans);
   endproperty
 
-  TX_AbortTransmission_Assert            : assert property (Tx_AbortTransmission)$display("PASS: TX_AbortedTransmission");
+  TX_AbortTransmission_Assert            : assert property (TX_AbortTransmission)$display("PASS: TX_AbortedTransmission");
                                            else begin $display("ERROR(%0t): Tx_AbortedTrans did not get asserted after Tx_AbortFrame went high",$time); ErrCntAssertions++; end
 
 
