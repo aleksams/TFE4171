@@ -13,22 +13,6 @@
 
 `define TEST_NUM 20
 
-//Covergroup
-covergroup hdlc_rx_cg () @(posedge uin_hdlc.Clk);
-  Rx_FrameSize: coverpoint uin_hdlc.Rx_FrameSize {
-    bins FrameSizes_Valid   = {[0:126]};
-    bins FrameSizes_Invalid = default;
-  }
-  Tx_FrameSize: coverpoint uin_hdlc.Tx_FrameSize {
-    bins FrameSizes_Valid   = {[0:126]};
-    bins FrameSizes_Invalid
-     = default;
-  }
-endgroup
-
-  hdlc_rx_cg cg_inst = new;
-
-
 
 program testPr_hdlc(
   in_hdlc uin_hdlc

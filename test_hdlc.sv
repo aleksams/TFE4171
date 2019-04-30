@@ -19,6 +19,7 @@ module test_hdlc ();
   assign uin_hdlc.Rx_FrameError      = u_dut.Rx_FrameError;
   assign uin_hdlc.Rx_Drop            = u_dut.Rx_Drop;
   assign uin_hdlc.Rx_FrameSize       = u_dut.Rx_FrameSize;
+  assign uin_hdlc.Rx_TempReg         = u_dut.u_RxChannel.TempRegister;
 
   //TX - Internal assignments
   assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;
@@ -27,10 +28,34 @@ module test_hdlc ();
   assign uin_hdlc.Tx_FCSDone         = u_dut.Tx_FCSDone;
   assign uin_hdlc.Tx_WriteFCS        = u_dut.Tx_WriteFCS;
   assign uin_hdlc.Tx_Full            = u_dut.Tx_Full;
+  assign uin_hdlc.Tx_FrameSize       = u_dut.Tx_FrameSize;
   assign uin_hdlc.Tx_RdBuff          = u_dut.Tx_RdBuff;
 
   //Clock
   always #250ns uin_hdlc.Clk = ~uin_hdlc.Clk;
+
+  //Coverage
+  covergroup hdlc_rx_cg () @(posedge uin_hdlc.Clk);
+    Rx_FrameSize: coverpoint uin_hdlc.Rx_FrameSize {
+      bins FrameSizes_Valid   = {[0:126]};
+      bins FrameSizes_Invalid = default;
+    }
+    Rx_Byte: coverpoint uin_hdlc.Rx_TempReg {
+      bins FrameFlag    = { 126 };
+      bins AbortPattern = { 127 };
+      bins Idle         = { 255 };
+      bins Others       = default;
+    }
+  endgroup
+  
+  /*covergroup hdlc_tx_cg () @(posedge uin_hdlc.Clk);
+    Tx_FrameSize: coverpoint uin_hdlc.Tx_FrameSize {
+      bins FrameSizes_Valid   = {[0:126]};
+      bins FrameSizes_Invalid = default;
+    }
+  endgroup*/
+  
+  hdlc_rx_cg cg_inst = new;
 
   //Dut
   Hdlc u_dut(
