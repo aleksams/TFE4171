@@ -50,6 +50,7 @@ interface in_hdlc ();
   logic       Rx_Drop;
   logic [7:0] Rx_FrameSize;
   logic [7:0] Rx_TempReg;
+  logic       Rx_FCSen;
 
 
 endinterface

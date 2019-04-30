@@ -20,6 +20,7 @@ module test_hdlc ();
   assign uin_hdlc.Rx_Drop            = u_dut.Rx_Drop;
   assign uin_hdlc.Rx_FrameSize       = u_dut.Rx_FrameSize;
   assign uin_hdlc.Rx_TempReg         = u_dut.u_RxChannel.TempRegister;
+  assign uin_hdlc.Rx_FCSen           = u_dut.Rx_FCSen;
 
   //TX - Internal assignments
   assign uin_hdlc.Tx_ValidFrame      = u_dut.Tx_ValidFrame;
